@@ -31,21 +31,21 @@ Inode* ialloc(void){
             if(i == NICINOD) block_end_flag = true;
             else {
                 filsys.s_inode[filsys.s_pinode--] = cur_di;
+                cnt++;
             } // end of inner if-else
-
-
-            // 等待iget完成
-            tmp_inode_ptr = iget(filsys.s_inode[filsys.s_pinode]);
-            // 等待iget完成
-
-            fseek(fd, DINODESTART+filsys.s_inode[filsys.s_pinode]*DINODESIZ, SEEK_SET);
-            fwrite(tmp_inode_ptr->di_number, 1, sizeof(Dinode), fd);
-            filsys.s_pinode++;
-            filsys.s_ninode--;
-            filsys.s_fmod = SUPDATE;
-            return tmp_inode_ptr;
         } // end of middle while
+        filsys.s_rinode = cur_di;
     } // end of outer if
+    // 等待iget完成
+    tmp_inode_ptr = iget(filsys.s_inode[filsys.s_pinode]);
+    // 等待iget完成
+
+    fseek(fd, DINODESTART+filsys.s_inode[filsys.s_pinode]*DINODESIZ, SEEK_SET);
+    fwrite(tmp_inode_ptr->di_number, 1, sizeof(Dinode), fd);
+    filsys.s_pinode++;
+    filsys.s_ninode--;
+    filsys.s_fmod = SUPDATE;
+    return tmp_inode_ptr;
 }
 
 
