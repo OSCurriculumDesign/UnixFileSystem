@@ -68,6 +68,7 @@ struct Dir {
     int size;
 };
 
-
+Inode* ialloc(void);
+bool ifree(unsigned int dinode_id);
 
 #endif
