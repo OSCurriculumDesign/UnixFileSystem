@@ -43,7 +43,7 @@
 
 #define read 1
 #define write 2
-#define exicute 4
+#define excute 4
 
 #define DEFAULTMODE 00777
 

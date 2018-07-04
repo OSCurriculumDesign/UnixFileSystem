@@ -1,7 +1,7 @@
 #ifndef FILESYS_H
 #define FILESYS_H
 
-#include <cstdlib>
+#include <cstdio>
 #include "const.h"
 #include "inode.h"
 
@@ -22,26 +22,26 @@ struct Filsys{
 
 
 struct Pwd{
-   unsigned short p_uid;
-   unsigned short p_gid;
-   char pasword[PWDSIZ];
- };
+  unsigned short p_uid;
+  unsigned short p_gid;
+  char pasword[PWDSIZ];
+};
 
 
- struct File{
-   char f_flag;
-   unsigned int f_count;
-   Inode * f_inode;
-   unsigned long f_off;
- };
+struct File{
+  char f_flag;
+  unsigned int f_count;
+  Inode* f_inode;
+  unsigned long f_off;
+};
 
 
- struct User{
-   unsigned short u_default_mode;
-   unsigned short u_uid;
-   unsigned short u_gid;
-   unsigned short u_ofile[NOFILE];
- };
+struct User{
+  unsigned short u_default_mode;
+  unsigned short u_uid;
+  unsigned short u_gid;
+  unsigned short u_ofile[NOFILE];
+};
 
 
 extern Hinode hinode[NHINO];
