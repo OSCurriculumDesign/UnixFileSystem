@@ -1,2 +1,5 @@
 unix_file_sys
 CMakeFiles/*
+.vscode/*
+
+./sample.*
