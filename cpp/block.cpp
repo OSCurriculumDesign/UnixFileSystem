@@ -3,8 +3,8 @@
 
 static unsigned int block_buf[BLOCKSIZ]
 
-unsigned int balloc(){
-  unsigned int free_block,free_block_num;
+unsigned short balloc(){
+  unsigned short free_block,free_block_num;
   int i;
   //超级快中的空闲块块数为0说明无空间可以申请了
   if(filsys.s_nfree == 0){
@@ -34,8 +34,9 @@ unsigned int balloc(){
 }
 
 
-bfree(unsigned int block_num){
-  int i;
+bfree(unsigned short block_num){
+  unsigned short i=0;
+  filsys.s_free++;
   if(filsys.s_free == 0){
     block_buf[NICFREE]=NICFREE;
     for(i=0; i<NICFREE; i++){

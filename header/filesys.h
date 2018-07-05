@@ -11,6 +11,7 @@ struct Filsys{
   unsigned int s_nfree;
   unsigned short s_pfree;
   unsigned short s_free[NICFREE];
+  unsigned short s_free_master_number;
 
   unsigned int s_ninode;
   unsigned short s_pinode;

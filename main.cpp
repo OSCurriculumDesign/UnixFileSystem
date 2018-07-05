@@ -2,7 +2,7 @@
 #include <cstdio>
 
 static void test_sizeof_Dinode(void) {
-    fprintf(stdout, "Sizeof Dinode is %d\n", 
+    fprintf(stdout, "Sizeof Dinode is %d\n",
     sizeof(unsigned short)*4 + sizeof(unsigned int)*NADDR + sizeof(unsigned long));
     fprintf(stdout, "The ture sizeof the Dinode is %d\n", sizeof(Dinode));
     fprintf(stdout, "sizeof unsigned short is %d\n", sizeof(unsigned short));
@@ -12,7 +12,7 @@ static void test_sizeof_Dinode(void) {
 }
 
 static void test_sizeof_Direct(void) {
-    fprintf(stdout, "Sizeof Direct is %d\n", 
+    fprintf(stdout, "Sizeof Direct is %d\n",
     sizeof(char)*DIRSIZ + sizeof(unsigned int));
     fprintf(stdout, "The ture sizeof the Direct is %d\n", sizeof(Direct));
     fprintf(stdout, "sizeof char is %d\n", sizeof(char));
