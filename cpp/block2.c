@@ -1,6 +1,7 @@
 #include <cstdio>
 #include "block.h"
 #include "filesys.h"
+#include <cstring>
 
 //申请一个数据块
 unsigned short balloc(){
@@ -16,14 +17,14 @@ unsigned short balloc(){
     unsigned short nextBlock = filsys.s_free[NICFREE-1];    /*先从当前栈中获取下一组的组长块地址*/
     fseek(fd, DATASTART+nextBlock*BLOCKSIZ, SEEK_SET);
     fread(tempStack,(NICFREE+1) * sizeof(unsigned short),1,fd);   /*再从组长块中获取下一组的信息，放到栈中*/
-    fre_block_num=tempStack[NICFREE];
-    for(i=0;i<free_block_num;i++){
+    unsigned short free_block_num=tempStack[NICFREE];
+    for(int i=0;i<free_block_num;i++){
       filsys.s_free[NICFREE-1-i]=tempStack[i];
     }
     //在组长块分配前，现将组长块中表的数据情空
-    fseek(fd, DATASTART+filesys.s_free_master_number*BLOCKSIZ, SEEK_SET);
+    fseek(fd, DATASTART+filsys.s_free_master_number*BLOCKSIZ, SEEK_SET);
     fwrite(EMPTY_BLOCK, BLOCKSIZ*sizeof(char), 1, fd);
-    filsys.s_pfree=NICFREE-fre_block_num;
+    filsys.s_pfree=NICFREE-free_block_num;
     //更新超级块中组长块的地址
     filsys.s_free_master_number=nextBlock;
   }
@@ -34,11 +35,11 @@ unsigned short balloc(){
 
 //文件系释放一个数据块
 void bfree(unsigned short block_number){
-  filsys.s_fre[s_pfree-1]=block_number;  //先把释放的空闲块号存到栈中
-  if(filsys.s_free==1){
+  filsys.s_free[filsys.s_pfree-1]=block_number;  //先把释放的空闲块号存到栈中
+  if(filsys.s_pfree==0){
     unsigned short tempStack[NICFREE+1];  //+1是为了除50个栈外，还有一个栈深的数据
     //先将超级块中的数据放到 tempStack 中
-    for (i=0; i<NICFREE; i++){
+    for (int i=0; i<NICFREE; i++){
       tempStack[i]=filsys.s_free[NICFREE-1-i];
       filsys.s_free[NICFREE-1-i]=0;
     }
@@ -56,6 +57,6 @@ void bfree(unsigned short block_number){
 //将内容为 content 的数据存到第 block_num 块的数据块
 void bwrite(unsigned short block_number, char * content){
   unsigned short length = strlen(content);
-  fseek(fd, DATASTART+block_num*BLOCKSIZ, SEEK_SET);
-  fwrite(contennt, length*sizeof(char), 1, fd));
+  fseek(fd, DATASTART+block_number*BLOCKSIZ, SEEK_SET);
+  fwrite(content, length*sizeof(char), 1, fd);
 }

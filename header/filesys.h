@@ -25,7 +25,7 @@ struct Filsys{
 struct Pwd{
   unsigned short p_uid;
   unsigned short p_gid;
-  char pasword[PWDSIZ];
+  char password[PWDSIZ];
 };
 
 

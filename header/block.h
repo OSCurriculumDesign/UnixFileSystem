@@ -4,7 +4,7 @@
 #include "const.h"
 
 struct block{
-  b flag;                    //判断是否被用
+  unsigned short flag;                    //判断是否被用
   char content[410];                      //存储内容
   unsigned short blockStack[NICFREE];     //记录空闲块之间的组织结构
 };

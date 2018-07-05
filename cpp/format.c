@@ -3,13 +3,13 @@
 #include "filesys.h"
 #include <stdlib.h>
 #include <string.h>
-format()
+void format()
 {
-  struct inode * inode;
-	struct direct dir_buf [BLOCKSIZ / (DIRSIZ+2)];
-	struct pwd password [BLOCKSIZ/(PWDSIZ+4)];
+  struct Inode * inode;
+	struct Direct dir_buf [BLOCKSIZ / (DIRSIZ+2)];
+	struct Pwd password [BLOCKSIZ/(PWDSIZ+4)];
 
-	struct filsys filsys;
+	struct Filsys filsys;
 	unsigned int block_buf[51];
 	char * buf;
 	int i, j;
@@ -115,9 +115,9 @@ format()
   }
   fseek(fd, DATASTART+BLOCKSIZ*i, SEEK_SET);
   fwrite (block_buf, sizeof(block_buf), 1, fd);
-  filsys.p_free=41;   //41=49-9+1
+  filsys.s_pfree=41;   //41=49-9+1
   filsys.s_free_master_number=11;
-  
+
 
   // block_buf[NICFREE-1]=FILEBLK+1; /*FILEBLK+1 is a flag of end */
   // for (i=0; i<NICFREE-1; i++){
