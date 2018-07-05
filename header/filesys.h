@@ -4,44 +4,45 @@
 #include <cstdio>
 #include "const.h"
 #include "inode.h"
+#include "block.h"
 
 struct Filsys{
-  unsigned short s_isize;
-  unsigned short s_fsize;
-  unsigned int s_nfree;
-  unsigned short s_pfree;
-  unsigned short s_free[NICFREE];
-  unsigned short s_free_master_number;
+    unsigned short s_isize;
+    unsigned short s_fsize;
+    unsigned int s_nfree;
+    unsigned short s_pfree;
+    unsigned short s_free[NICFREE];
+    unsigned short s_free_master_number;
 
-  unsigned int s_ninode;
-  unsigned short s_pinode;
-  unsigned int s_inode[NICINOD];
-  unsigned int s_rinode;
+    unsigned int s_ninode;
+    unsigned short s_pinode;
+    unsigned int s_inode[NICINOD];
+    unsigned int s_rinode;
 
-  char s_fmod;
+    char s_fmod;
 };
 
 
 struct Pwd{
-  unsigned short p_uid;
-  unsigned short p_gid;
-  char password[PWDSIZ];
+    unsigned short p_uid;
+    unsigned short p_gid;
+    char password[PWDSIZ];
 };
 
 
 struct File{
-  char f_flag;
-  unsigned int f_count;
-  Inode* f_inode;
-  unsigned long f_off;
+    char f_flag;
+    unsigned int f_count;
+    Inode* f_inode;
+    unsigned long f_off;
 };
 
 
 struct User{
-  unsigned short u_default_mode;
-  unsigned short u_uid;
-  unsigned short u_gid;
-  unsigned short u_ofile[NOFILE];
+    unsigned short u_default_mode;
+    unsigned short u_uid;
+    unsigned short u_gid;
+    unsigned short u_ofile[NOFILE];
 };
 
 
@@ -49,17 +50,23 @@ extern Hinode hinode[NHINO];
 extern Dir dir;
 extern File sys_ofile[SYSOPENFILE];
 extern Filsys filsys;
+extern FILE * fd ;
 extern Pwd pwd[PWDNUM];
 extern User user[USERNUM];
-extern FILE * fd ;
 extern Inode * cur_path_inode;
 extern int user_id, file_block;
 
 
-// extern struct inode* iget();
-// extern iput();
-// extern unsigned int baloc();
-// extern bfree();
+extern Inode* iget(unsigned int dinode_id);
+extern bool iput(Inode* pinode);
+extern unsigned short baloc();
+extern void bfree();
+extern bool ifree(unsigned int dinode_id);
+extern Inode* ialloc(void);
+extern void bwrite(unsigned short block_number, char * content);
+extern void bfree(unsigned short block_number);
+extern unsigned short balloc();
+extern void format();
 // extern struct inode *ialoc();
 // extern ifree();
 // extern unsigned int namei();
@@ -76,7 +83,6 @@ extern int user_id, file_block;
 // extern int login();
 // extern logout();
 // extern instal();
-// extern format();
 // extern close();
 // extern halt();
 #endif
