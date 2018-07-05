@@ -57,5 +57,5 @@ void bfree(unsigned short block_number){
 void bwrite(unsigned short block_number, char * content){
   unsigned short length = strlen(content);
   fseek(fd, DATASTART+block_num*BLOCKSIZ, SEEK_SET);
-  fwrite(contennt, length*sizeof(char), 1, fd))
+  fwrite(contennt, length*sizeof(char), 1, fd));
 }
