@@ -53,7 +53,7 @@ struct Hinode {
 
     test log:
     Sizeof Direct is 18
-    The ture sizeof the Direct is 20
+    The true sizeof the Direct is 20
     sizeof char is 1
     sizeof unsigned int is 4
     DIRSIZ is 14
@@ -68,7 +68,13 @@ struct Dir {
     int size;
 };
 
+// ialloc.cpp实现这两个接口
 Inode* ialloc(void);
 bool ifree(unsigned int dinode_id);
+
+// igetput.cpp实现这两个接口
+Inode* iget(unsigned int dinode_id);
+bool iput(Inode* inode_ptr);
+
 
 #endif
