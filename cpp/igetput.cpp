@@ -1,7 +1,7 @@
 #include <cstdio>
 #include "inode.h"
 #include "filesys.h"
-#include "block.cpp"
+// #include "block.cpp"
 //#include "format.cpp"
 
 // 静态的辅助函数和变量
