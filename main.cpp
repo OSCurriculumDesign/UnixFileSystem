@@ -14,11 +14,7 @@ static void test_sizeof_Dinode(void) {
 static void test_sizeof_Inode(void) {
     fprintf(stdout, "Sizeof Inode append is %d\n", 
     2*sizeof(Inode*)+sizeof(char)+2*sizeof(unsigned int));
-    fprintf(stdout, "The true sizeof the Inode is %d\n", sizeof(Inode));
-    fprintf(stdout, "sizeof unsigned short is %d\n", sizeof(unsigned short));
-    fprintf(stdout, "sizeof unsigned int is %d\n", sizeof(unsigned int));
-    fprintf(stdout, "sizeof unsigned long is %d\n", sizeof(unsigned long));
-    fprintf(stdout, "NADDR is %d\n\n\n", NADDR);
+    fprintf(stdout, "The true sizeof the Inode is %d\n\n\n", sizeof(Inode));
 }
 
 static void test_sizeof_Direct(void) {
@@ -32,6 +28,7 @@ static void test_sizeof_Direct(void) {
 
 int main(int argc, char* argv[]) {
     test_sizeof_Dinode();
+    test_sizeof_Inode();
     test_sizeof_Direct();
     return 0;
 }

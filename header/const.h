@@ -9,7 +9,7 @@
 #define PWDSIZ   12  //口令字
 #define PWDNUM   32  //最多可设32个口令登录
 #define NOFILE  20  //每个用户最多可打开20个文件，即用户打开文件最大次数
-#define NADDR 10  //每个i节点最多指向10块，addr[0]~addr[9]
+#define NADDR 12  //每个i节点最多指向10块，addr[0]~addr[9]
 #define NHINO  128  //共128个Hash链表，提供索引i节点（必须为2的幂）
 #define USERNUM  10  //最多允许10个用户登录
 
