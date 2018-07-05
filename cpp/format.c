@@ -3,8 +3,7 @@
 #include "filesys.h"
 #include <stdlib.h>
 #include <string.h>
-void format()
-{
+void format(){
   struct Inode * inode;
 	struct Direct dir_buf [BLOCKSIZ / (DIRSIZ+2)];
 	struct Pwd password [BLOCKSIZ/(PWDSIZ+4)];
@@ -141,4 +140,4 @@ void format()
   // filsys.s_pinode=0;
   // fseek(fd, BLOCKSIZ, SEEK_SET);
   // fwrite (&filsys,1,sizeof(struct filsys),fd);
-}
+};
