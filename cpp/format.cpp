@@ -1,14 +1,16 @@
 /*初始化磁盘格式化程序format.c*/
-#include <stdio.h>
+#ifndef FORMAT_CPP
+#define FORMAT_CPP
+
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include "filesys.h"
-#include <stdlib.h>
-#include <string.h>
-void format()
-{
+using namespace std;
+void format(){
     struct Inode * inode;
     struct Direct dir_buf [BLOCKSIZ / (DIRSIZ+2)];
     struct Pwd password [BLOCKSIZ/(PWDSIZ+4)];
-
     struct Filsys filsys;
     unsigned int block_buf[51];
     char * buf;
@@ -118,6 +120,8 @@ void format()
     filsys.s_pfree=41;   //41=49-9+1
     filsys.s_free_master_number=11;
 }
+
+#endif
 
 
     // block_buf[NICFREE-1]=FILEBLK+1; /*FILEBLK+1 is a flag of end */

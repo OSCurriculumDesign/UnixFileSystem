@@ -1,7 +1,8 @@
 #include <cstdio>
 #include "inode.h"
 #include "filesys.h"
-#include "block2.c"
+#include "block.cpp"
+//#include "format.cpp"
 
 // 静态的辅助函数和变量
 static Dinode block_buf[BLOCKSIZ/DINODESIZ];
@@ -16,7 +17,7 @@ Inode* iget(unsigned int dinode_id) {
     Inode* newInode;
 
     if(hinode[inode_id].i_forw != nullptr) {
-       tmp = hinode[inode_id].i_forw;
+        tmp = hinode[inode_id].i_forw;
         while(tmp) {
             if(tmp->i_ino == inode_id) {
                 // 引用计数加一

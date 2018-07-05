@@ -1,5 +1,24 @@
+#include <iostream>
+//#include "format.cpp"
 #include "filesys.h"
 #include <cstdio>
+#include "filesys.h"
+#include <cstdlib>
+#include <cstring>
+using namespace std;
+
+FILE * fd;
+Filsys filsys;
+Hinode hinode[NHINO];
+
+int main(int argc, char* argv[]) {
+    // test_sizeof_Dinode();
+    // test_sizeof_Inode();
+    // test_sizeof_Direct();
+    format();
+    return 0;
+}
+
 
 static void test_sizeof_Dinode(void) {
     fprintf(stdout, "Sizeof Dinode is %d\n",
@@ -12,7 +31,7 @@ static void test_sizeof_Dinode(void) {
 }
 
 static void test_sizeof_Inode(void) {
-    fprintf(stdout, "Sizeof Inode append is %d\n", 
+    fprintf(stdout, "Sizeof Inode append is %d\n",
     2*sizeof(Inode*)+sizeof(char)+2*sizeof(unsigned int));
     fprintf(stdout, "The true sizeof the Inode is %d\n\n\n", sizeof(Inode));
 }
@@ -24,11 +43,4 @@ static void test_sizeof_Direct(void) {
     fprintf(stdout, "sizeof char is %d\n", sizeof(char));
     fprintf(stdout, "sizeof unsigned int is %d\n", sizeof(unsigned int));
     fprintf(stdout, "DIRSIZ is %d\n\n\n", DIRSIZ);
-}
-
-int main(int argc, char* argv[]) {
-    test_sizeof_Dinode();
-    test_sizeof_Inode();
-    test_sizeof_Direct();
-    return 0;
 }

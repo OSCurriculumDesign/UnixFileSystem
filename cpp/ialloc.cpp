@@ -1,6 +1,7 @@
 #include <cstdio>
 #include "inode.h"
 #include "filesys.h"
+//#include "format.cpp"
 
 // 辅助的static函数和变量
 static Dinode block_buf[BLOCKSIZ/DINODESIZ];
