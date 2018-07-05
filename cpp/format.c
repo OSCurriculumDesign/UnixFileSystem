@@ -10,7 +10,7 @@ format()
 	struct pwd password [BLOCKSIZ/(PWDSIZ+4)];
 
 	struct filsys filsys;
-	unsigned int block_buf[BLOCKSIZ / sizeof(int)];
+	unsigned int block_buf[51];
 	char * buf;
 	int i, j;
   /*	creat the file system file */
@@ -93,6 +93,7 @@ format()
   filsys.s_fsize=FILEBLK;
   filsys.s_ninode=DINODEBLK * BLOCKSIZ/DINODESIZ-4;
   filsys.s_nfree = FILEBLK-3;
+  //超级块中 inode 信息的设置
   for (i=0; i<NICINOD; i++){
     /*	begin with 4, 0,1.2,3, is used by main, etc, password */
     filsys.s_inode[i]=4+i;
@@ -100,26 +101,44 @@ format()
   filsys.s_pinode=0;
   filsys.s_rinode=NICINOD+4;      /*铭记指针就是上限*/
 
-  block_buf[NICFREE-1]=FILEBLK+1; /*FILEBLK+1 is a flag of end */
-  for (i=0; i<NICFREE-1; i++){
-    block_buf[NICFREE-2-i]=FILEBLK-i;
-  }
-  fseek(fd, DATASTART+BLOCKSIZ * (FILEBLK-NICFREE-1), SEEK_SET);
-  fwrite (block_buf, 1, BLOCKSIZ, fd);
-  for	(i=FILEBLK-NICFREE-1; i>2; i-= NICFREE){
-    for (j=0;j<NICFREE;j++){
-      block_buf[j]=i-j;
+  block_buf[NICFREE]=NICFREE;
+  for(i=511;i>11;i-=50){
+    for(j=0;j<NICFREE;j++){
+      block_buf[NICFREE-j-1]=i-j;
     }
-    fseek(fd ,DATASTART+BLOCKSIZ * (i-1) ,SEEK_SET);
-    fwrite(block_buf, 1, BLOCKSIZ,fd);
+    fseek(fd, DATASTART+BLOCKSIZ*i, SEEK_SET);
+    fwrite (block_buf, sizeof(block_buf), 1, fd);
   }
-  i+=NICFREE   /*LTZ 如果不加的话 i 现在为-41*/
-  j=1;
-  for (i=i; i>2;i--){
-    filsys.s_free[NICFREE+i-j] =i;
+  block_buf[NICFREE]=9;
+  for(j=0;j<9;j++){
+    filsys.s_free[NICFREE-j-1]=i-j;
   }
-  filsys.s_pfree=NICFREE -j;
-  filsys.s_pinode=0;
-  fseek(fd, BLOCKSIZ, SEEK_SET);
-  fwrite (&filsys,1,sizeof(struct filsys),fd);
+  fseek(fd, DATASTART+BLOCKSIZ*i, SEEK_SET);
+  fwrite (block_buf, sizeof(block_buf), 1, fd);
+  filsys.p_free=41;   //41=49-9+1
+  filsys.s_free_master_number=11;
+  
+
+  // block_buf[NICFREE-1]=FILEBLK+1; /*FILEBLK+1 is a flag of end */
+  // for (i=0; i<NICFREE-1; i++){
+  //   block_buf[NICFREE-2-i]=FILEBLK-i;
+  // }
+  // fseek(fd, DATASTART+BLOCKSIZ * (FILEBLK-NICFREE-1), SEEK_SET);
+  // fwrite (block_buf, 1, BLOCKSIZ, fd);
+  // for	(i=FILEBLK-NICFREE-1; i>2; i-= NICFREE){
+  //   for (j=0;j<NICFREE;j++){
+  //     block_buf[j]=i-j;
+  //   }
+  //   fseek(fd ,DATASTART+BLOCKSIZ * (i-1) ,SEEK_SET);
+  //   fwrite(block_buf, 1, BLOCKSIZ,fd);
+  // }
+  // i+=NICFREE   /*LTZ 如果不加的话 i 现在为-41*/
+  // j=1;
+  // for (i=i; i>2;i--){
+  //   filsys.s_free[NICFREE+i-j] =i;
+  // }
+  // filsys.s_pfree=NICFREE -j;
+  // filsys.s_pinode=0;
+  // fseek(fd, BLOCKSIZ, SEEK_SET);
+  // fwrite (&filsys,1,sizeof(struct filsys),fd);
 }
