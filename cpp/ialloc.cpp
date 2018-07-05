@@ -41,7 +41,7 @@ Inode* ialloc(void){
     // 等待iget完成
 
     fseek(fd, DINODESTART+filsys.s_inode[filsys.s_pinode]*DINODESIZ, SEEK_SET);
-    fwrite(tmp_inode_ptr->di_number, 1, sizeof(Dinode), fd);
+    fwrite((Dinode*)tmp_inode_ptr, 1, sizeof(Dinode), fd);
     filsys.s_pinode++;
     filsys.s_ninode--;
     filsys.s_fmod = SUPDATE;
