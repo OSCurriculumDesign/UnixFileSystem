@@ -1,7 +1,4 @@
 /*初始化磁盘格式化程序format.c*/
-#ifndef FORMAT_CPP
-#define FORMAT_CPP
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -11,12 +8,11 @@ void format(){
     struct Inode * inode;
     struct Direct dir_buf [BLOCKSIZ / (DIRSIZ+2)];
     struct Pwd password [BLOCKSIZ/(PWDSIZ+4)];
-    struct Filsys filsys;
-    unsigned int block_buf[51];
+    unsigned short block_buf[51];
     char * buf;
     int i, j;
     /*    creat the file system file */
-    fd=fopen ("filesystem", "r+w+b");
+    fd=fopen ("/Users/eric_lee/Project/OS/OS/filesystem", "r+w+b");
     buf=(char * ) malloc ((DINODEBLK+FILEBLK+2) * BLOCKSIZ * sizeof(char));
     if (buf==NULL){
         printf ("\nFile system file creat failed!(buf==NULL)\n");
@@ -108,20 +104,16 @@ void format(){
         for(j=0;j<NICFREE;j++){
             block_buf[NICFREE-j-1]=i-j;
         }
-        fseek(fd, DATASTART+BLOCKSIZ*i, SEEK_SET);
+        fseek(fd, DATASTART+BLOCKSIZ*(i-50), SEEK_SET);
         fwrite (block_buf, sizeof(block_buf), 1, fd);
     }
     block_buf[NICFREE]=9;
     for(j=0;j<9;j++){
         filsys.s_free[NICFREE-j-1]=i-j;
     }
-    fseek(fd, DATASTART+BLOCKSIZ*i, SEEK_SET);
-    fwrite (block_buf, sizeof(block_buf), 1, fd);
     filsys.s_pfree=41;   //41=49-9+1
-    filsys.s_free_master_number=11;
 }
 
-#endif
 
 
     // block_buf[NICFREE-1]=FILEBLK+1; /*FILEBLK+1 is a flag of end */

@@ -4,7 +4,6 @@
 #include <cstdio>
 #include "const.h"
 #include "inode.h"
-#include "block.h"
 
 struct Filsys{
     unsigned short s_isize;
@@ -12,7 +11,6 @@ struct Filsys{
     unsigned int s_nfree;
     unsigned short s_pfree;
     unsigned short s_free[NICFREE];
-    unsigned short s_free_master_number;
 
     unsigned int s_ninode;
     unsigned short s_pinode;
@@ -61,6 +59,8 @@ extern Inode* iget(unsigned int dinode_id);
 extern bool iput(Inode* pinode);
 extern unsigned short baloc();
 extern void bfree();
+extern void bwrite(unsigned short block_number, char * content);
+extern char * bread(unsigned short block_number, unsigned short length);
 extern bool ifree(unsigned int dinode_id);
 extern Inode* ialloc(void);
 extern void bwrite(unsigned short block_number, char * content);
