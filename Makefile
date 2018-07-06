@@ -123,6 +123,114 @@ unix_file_sys/fast:
 	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/build
 .PHONY : unix_file_sys/fast
 
+cpp/block.o: cpp/block.cpp.o
+
+.PHONY : cpp/block.o
+
+# target to build an object file
+cpp/block.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/block.cpp.o
+.PHONY : cpp/block.cpp.o
+
+cpp/block.i: cpp/block.cpp.i
+
+.PHONY : cpp/block.i
+
+# target to preprocess a source file
+cpp/block.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/block.cpp.i
+.PHONY : cpp/block.cpp.i
+
+cpp/block.s: cpp/block.cpp.s
+
+.PHONY : cpp/block.s
+
+# target to generate assembly for a file
+cpp/block.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/block.cpp.s
+.PHONY : cpp/block.cpp.s
+
+cpp/format.o: cpp/format.cpp.o
+
+.PHONY : cpp/format.o
+
+# target to build an object file
+cpp/format.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/format.cpp.o
+.PHONY : cpp/format.cpp.o
+
+cpp/format.i: cpp/format.cpp.i
+
+.PHONY : cpp/format.i
+
+# target to preprocess a source file
+cpp/format.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/format.cpp.i
+.PHONY : cpp/format.cpp.i
+
+cpp/format.s: cpp/format.cpp.s
+
+.PHONY : cpp/format.s
+
+# target to generate assembly for a file
+cpp/format.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/format.cpp.s
+.PHONY : cpp/format.cpp.s
+
+cpp/ialloc.o: cpp/ialloc.cpp.o
+
+.PHONY : cpp/ialloc.o
+
+# target to build an object file
+cpp/ialloc.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/ialloc.cpp.o
+.PHONY : cpp/ialloc.cpp.o
+
+cpp/ialloc.i: cpp/ialloc.cpp.i
+
+.PHONY : cpp/ialloc.i
+
+# target to preprocess a source file
+cpp/ialloc.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/ialloc.cpp.i
+.PHONY : cpp/ialloc.cpp.i
+
+cpp/ialloc.s: cpp/ialloc.cpp.s
+
+.PHONY : cpp/ialloc.s
+
+# target to generate assembly for a file
+cpp/ialloc.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/ialloc.cpp.s
+.PHONY : cpp/ialloc.cpp.s
+
+cpp/igetput.o: cpp/igetput.cpp.o
+
+.PHONY : cpp/igetput.o
+
+# target to build an object file
+cpp/igetput.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/igetput.cpp.o
+.PHONY : cpp/igetput.cpp.o
+
+cpp/igetput.i: cpp/igetput.cpp.i
+
+.PHONY : cpp/igetput.i
+
+# target to preprocess a source file
+cpp/igetput.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/igetput.cpp.i
+.PHONY : cpp/igetput.cpp.i
+
+cpp/igetput.s: cpp/igetput.cpp.s
+
+.PHONY : cpp/igetput.s
+
+# target to generate assembly for a file
+cpp/igetput.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/igetput.cpp.s
+.PHONY : cpp/igetput.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -159,6 +267,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... unix_file_sys"
 	@echo "... edit_cache"
+	@echo "... cpp/block.o"
+	@echo "... cpp/block.i"
+	@echo "... cpp/block.s"
+	@echo "... cpp/format.o"
+	@echo "... cpp/format.i"
+	@echo "... cpp/format.s"
+	@echo "... cpp/ialloc.o"
+	@echo "... cpp/ialloc.i"
+	@echo "... cpp/ialloc.s"
+	@echo "... cpp/igetput.o"
+	@echo "... cpp/igetput.i"
+	@echo "... cpp/igetput.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

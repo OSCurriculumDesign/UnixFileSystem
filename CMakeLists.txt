@@ -9,4 +9,4 @@ FILE(GLOB SOURCE_LIST "cpp/*.cpp")
 
 include_directories(${CMAKE_SOURCE_DIR}/header)
 
-add_executable(unix_file_sys main.cpp ${SOURCE_DIR})
+add_executable(unix_file_sys main.cpp ${SOURCE_LIST})

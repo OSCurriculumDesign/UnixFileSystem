@@ -1,8 +1,6 @@
 #include <iostream>
-//#include "format.cpp"
 #include "filesys.h"
 #include <cstdio>
-#include "filesys.h"
 #include <cstdlib>
 #include <cstring>
 using namespace std;
@@ -40,7 +38,7 @@ int main(int argc, const char * argv[]) {
         cout<<temp[i]<<endl;
     }
     bwrite(234, "123123");
-    cout<<bread(234,512)<<endl;
+    cout<< bread(234,512) <<endl;
     return 0;
 }
 
