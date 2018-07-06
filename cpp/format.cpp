@@ -113,9 +113,6 @@ void format(){
     }
     filsys.s_pfree=41;   //41=49-9+1
 }
-
-
-
     // block_buf[NICFREE-1]=FILEBLK+1; /*FILEBLK+1 is a flag of end */
     // for (i=0; i<NICFREE-1; i++){
     //   block_buf[NICFREE-2-i]=FILEBLK-i;
