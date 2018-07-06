@@ -231,6 +231,33 @@ cpp/igetput.cpp.s:
 	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/igetput.cpp.s
 .PHONY : cpp/igetput.cpp.s
 
+cpp/zlibtool.o: cpp/zlibtool.cpp.o
+
+.PHONY : cpp/zlibtool.o
+
+# target to build an object file
+cpp/zlibtool.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/zlibtool.cpp.o
+.PHONY : cpp/zlibtool.cpp.o
+
+cpp/zlibtool.i: cpp/zlibtool.cpp.i
+
+.PHONY : cpp/zlibtool.i
+
+# target to preprocess a source file
+cpp/zlibtool.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/zlibtool.cpp.i
+.PHONY : cpp/zlibtool.cpp.i
+
+cpp/zlibtool.s: cpp/zlibtool.cpp.s
+
+.PHONY : cpp/zlibtool.s
+
+# target to generate assembly for a file
+cpp/zlibtool.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/zlibtool.cpp.s
+.PHONY : cpp/zlibtool.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -279,6 +306,9 @@ help:
 	@echo "... cpp/igetput.o"
 	@echo "... cpp/igetput.i"
 	@echo "... cpp/igetput.s"
+	@echo "... cpp/zlibtool.o"
+	@echo "... cpp/zlibtool.i"
+	@echo "... cpp/zlibtool.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
