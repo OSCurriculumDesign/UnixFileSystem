@@ -6,16 +6,21 @@
 #include "inode.h"
 
 struct Filsys{
+    // 
     unsigned short s_isize;
     unsigned short s_fsize;
     unsigned int s_nfree;
     unsigned short s_pfree;
     unsigned short s_free[NICFREE];
 
-    unsigned int s_ninode;
-    unsigned short s_pinode;
-    unsigned int s_inode[NICINOD];
-    unsigned int s_rinode;
+    // 空闲索引结点的数目
+    unsigned int free_inode_num;
+    // 空闲索引结点指针,是超级块栈顶指针
+    unsigned short free_inode_stacktop;
+    // 空闲索引结点的数组
+    unsigned int free_inodes[NICINOD];
+    // 被记录的索引结点
+    unsigned int cached_inode_index;
 
     char s_fmod;
 };
