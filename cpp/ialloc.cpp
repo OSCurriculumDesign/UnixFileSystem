@@ -25,7 +25,7 @@ Inode* ialloc(void){
                 block_end_flag = false;
                 i = 0;
             } // end of inner if
-            while(block_buf[i].di_mode == DIEMPTY) {
+            while(block_buf[i].data_mode == DIEMPTY) {
                 cur_di++;
                 i++;
             } // end of inner while

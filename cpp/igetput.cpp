@@ -20,7 +20,7 @@ static Dinode block_buf[BLOCKSIZ/DINODESIZ];
  *      如果inode已经被组织进入内存中了，直接返回内存中相对应的inode的地址
  *      否则返回新申请的inode块的地址
  *      一般而言，调用这个函数，我们默认调用者要使用或者查看这个文件，所以引用计数会加一
- * 异常：
+ * 返回值：所要的inode的指针
  *      
  */
 Inode* iget(unsigned int dinode_id) {
@@ -76,40 +76,37 @@ Inode* iget(unsigned int dinode_id) {
 
 /**
  * iput 函数
- * 功能：根据请求的inode的编号向内存中已经组织好的inode组织表的inode
- *      如果内存中没有，那么从硬盘中读取相对应的dinode并将其扩展成inode
- *      组织编入inode表中 
- * 参数：inode或者dinode的id
+ * 功能：根据给定的inode地址，释放该地址中的inode结点，并且修改必要信息
+ * 参数：inode的地址
  * 描述：
- *      如果inode已经被组织进入内存中了，直接返回内存中相对应的inode的地址
- *      否则返回新申请的inode块的地址
- *      一般而言，调用这个函数，我们默认调用者要使用或者查看这个文件，所以引用计数会加一
- * 异常：
+ *      把给定的inode结点的引用计数减一，如果引用计数归零，删除该inode，如果成功执行
+ *      释放结点的操作，返回true否则返回false
+ * 返回值：释放成功与否
  *      
  */
 
 bool iput(Inode* pinode) {
     // 有关联文件
-    if(pinode->i_count > 1) {
-        pinode->i_count--;
+    if(pinode->ref_count > 1) {
+        pinode->ref_count--;
         return false;
     } else {
-        if(pinode->di_number != 0) {
+        if(pinode->associated != 0) {
             // 如果没有关联文件，写回
-            long addr = DINODESTART + pinode->i_ino*DINODESIZ;
+            long addr = DINODESTART + pinode->mem_ino*DINODESIZ;
             fseek(fd, addr, SEEK_SET);
             fwrite((Dinode*)pinode, DINODESIZ, 1, fd);
         } else {
-            unsigned int block_num = pinode->di_size/BLOCKSIZ;
-            for(int i = 0; i < block_num; ++i) bfree(pinode->di_addr[i]);
-            ifree(pinode->i_ino);
+            unsigned int block_num = pinode->data_size/BLOCKSIZ;
+            for(int i = 0; i < block_num; ++i) bfree(pinode->data_addr[i]);
+            ifree(pinode->mem_ino);
         }
 
         // 释放内存中的结点
-        if(pinode->i_forw == nullptr) pinode->i_back->i_forw = nullptr;
+        if(pinode->next == nullptr) pinode->prev->next = nullptr;
         else {
-            pinode->i_forw->i_back = pinode->i_back;
-            pinode->i_back->i_forw = pinode->i_forw;
+            pinode->next->prev = pinode->prev;
+            pinode->prev->next = pinode->next;
         }
         delete pinode;
     }
