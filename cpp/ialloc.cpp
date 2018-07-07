@@ -37,9 +37,8 @@ Inode* ialloc(void){
         } // end of middle while
         filsys.s_rinode = cur_di;
     } // end of outer if
-    // 等待iget完成
+
     tmp_inode_ptr = iget(filsys.s_inode[filsys.s_pinode]);
-    // 等待iget完成
 
     fseek(fd, DINODESTART+filsys.s_inode[filsys.s_pinode]*DINODESIZ, SEEK_SET);
     fwrite((Dinode*)tmp_inode_ptr, 1, sizeof(Dinode), fd);

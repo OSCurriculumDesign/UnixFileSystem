@@ -18,12 +18,18 @@
  所以可以放心用
  */
 struct Dinode{
-    unsigned short di_number;
-    unsigned short di_mode;
-    unsigned short di_uid;
-    unsigned short di_gid;
-    unsigned long di_size;
-    unsigned int di_addr[NADDR];
+    // 关联的文件数目
+    unsigned short associated;
+    // 一共八位, 表示执行权限和该结点是（文件/文件夹）的属性
+    unsigned short data_mode;
+    // 所属的用户id
+    unsigned short uid;
+    // 所属的组id
+    unsigned short gid;
+    // 文件/文件夹大小
+    unsigned long data_size;
+    // 索引表，索引data块
+    unsigned int data_addr[NADDR];
 };
 
 /*
@@ -32,35 +38,36 @@ struct Dinode{
  幸运的是，我们并不关注inode的体积，因为我们只在内存中使用它
  */
 struct Inode: public Dinode {
-    Inode* i_forw;
-    Inode* i_back;
-    char i_flag;
-    unsigned int i_ino;
-    unsigned int i_count;
+    // 每一个hash值对应一个inode链表
+    // i_forw指向下一个结点
+    Inode* next;
+    // i_back指向第一个结点，第一个结点的这个指针指向自己
+    Inode* prev;
+    // 不清楚有什么用，姑且当作是当前目录或者文件的修改标志符号
+    char flag;
+    // 结点号，每个inode在内存中的唯一表示
+    unsigned int mem_ino;
+    // 引用计数
+    unsigned int ref_count;
 };
 
 struct Hinode {
-    Inode* i_forw;
+    // 每一个hash table项指向一个链表
+    Inode* head;
 };
 
 /*
- X 这类对象对于体积十分敏感
- 经过测试，该类的体积是20
- 这和我们之前分析的16字节不同
- 原因：我使用的是64位操作系统
- 所以 d_ino占用4位，由于C++自动会给
- 对象对齐4byte所以我们这里看到18变成20
+ 存在data块中的数据，如果指向这个块的inode或者dinode是文件属性
+ 那么，一个data块内部的数据不再是direct而是单纯的数据
+ 而又如果这个inode/dinode是文件夹类型的，那么这个被指向的data块的
+ 内容是direct的数组,由于我们使用64位操作系统和编译器，索引hash_i_node的
+ d_ino是4位的，为了凑齐两个字节我们把DIRSIZ修改为12，保证一个direct是16Bytes的
 
- test log:
- Sizeof Direct is 18
- The true sizeof the Direct is 20
- sizeof char is 1
- sizeof unsigned int is 4
- DIRSIZ is 14
+ direct: 16 bytes
  */
 struct Direct {
-    char d_name[DIRSIZ];
-    unsigned int d_ino;
+    char dir_name[DIRSIZ];
+    unsigned int disk_ino;
 };
 
 struct Dir {

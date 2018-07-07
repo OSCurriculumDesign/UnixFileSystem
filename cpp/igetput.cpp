@@ -10,20 +10,33 @@ static Dinode block_buf[BLOCKSIZ/DINODESIZ];
 
 // 实现inode.h中的接口
 
+/**
+ * iget 函数
+ * 功能：根据请求的inode的编号向内存中已经组织好的inode组织表的inode
+ *      如果内存中没有，那么从硬盘中读取相对应的dinode并将其扩展成inode
+ *      组织编入inode表中 
+ * 参数：inode或者dinode的id
+ * 描述：
+ *      如果inode已经被组织进入内存中了，直接返回内存中相对应的inode的地址
+ *      否则返回新申请的inode块的地址
+ *      一般而言，调用这个函数，我们默认调用者要使用或者查看这个文件，所以引用计数会加一
+ * 异常：
+ *      
+ */
 Inode* iget(unsigned int dinode_id) {
     int inode_id = dinode_id%NICINOD;
     unsigned long addr;
     Inode* tmp;
     Inode* newInode;
 
-    if(hinode[inode_id].i_forw != nullptr) {
-        tmp = hinode[inode_id].i_forw;
+    if(hinode[inode_id].head != nullptr) {
+        tmp = hinode[inode_id].head;
         while(tmp) {
-            if(tmp->i_ino == inode_id) {
+            if(tmp->mem_ino == inode_id) {
                 // 引用计数加一
-                tmp->i_count++;
+                tmp->ref_count++;
                 return tmp;
-            } else tmp = tmp->i_forw;
+            } else tmp = tmp->next;
         }
     }
 
@@ -31,7 +44,7 @@ Inode* iget(unsigned int dinode_id) {
     // 1. 计算dinode在磁盘中的地址
     addr = DINODESTART + dinode_id*DINODESIZ;
 
-    // 2. 向堆区申请新的结构题
+    // 2. 向堆区申请新的Inode结构体
     newInode = new Inode;
 
     // 3. 把磁盘中的Dinode读取进入Inode中
@@ -40,22 +53,40 @@ Inode* iget(unsigned int dinode_id) {
     fread((Dinode*)newInode, DINODESIZ, 1, fd);
 
     // 4. 把新结点放到hinode[inode]队列中
-    newInode->i_forw = hinode[inode_id].i_forw;
-    newInode->i_back = newInode;
-    if(newInode->i_forw != nullptr) newInode->i_forw->i_back = newInode;
-    hinode[inode_id].i_forw = newInode;
+    //    使用的是类似链表头插法的算法
+    newInode->next = hinode[inode_id].head;
+    newInode->prev = newInode;
+    if(newInode->next != nullptr) newInode->next->prev = newInode;
+    hinode[inode_id].head = newInode;
 
-    // 5. 初始化Inode结点
-    newInode->i_count = 0 + 1;
-    newInode->i_flag = 0;
-    newInode->i_ino = dinode_id;
+    // 5. 初始化Inode结点,新申请的结点默认没有引用计数，但是要将它返回给调用者，所以相当于
+    //    引用了一次  
+    newInode->ref_count = 0 + 1;
+    // 默认没有改变当前inode
+    newInode->flag = 0;
+    // mem_ino和硬盘中的索引块号应当是完全一致的
+    newInode->mem_ino = dinode_id;
 
-    // 这波操作我没看懂
-    newInode->di_size = 3*(DIRSIZ+4);
-    if(dinode_id == 3) newInode->di_size = BLOCKSIZ;
-
+    // // 这波操作我没看懂
+    // newInode->di_size = 3*(DIRSIZ+4);
+    // if(dinode_id == 3) newInode->di_size = BLOCKSIZ;
     return newInode;
 }
+
+
+/**
+ * iput 函数
+ * 功能：根据请求的inode的编号向内存中已经组织好的inode组织表的inode
+ *      如果内存中没有，那么从硬盘中读取相对应的dinode并将其扩展成inode
+ *      组织编入inode表中 
+ * 参数：inode或者dinode的id
+ * 描述：
+ *      如果inode已经被组织进入内存中了，直接返回内存中相对应的inode的地址
+ *      否则返回新申请的inode块的地址
+ *      一般而言，调用这个函数，我们默认调用者要使用或者查看这个文件，所以引用计数会加一
+ * 异常：
+ *      
+ */
 
 bool iput(Inode* pinode) {
     // 有关联文件
