@@ -5,10 +5,6 @@
 #include <cstring>
 using namespace std;
 
-FILE * fd;
-Filsys filsys;
-Hinode hinode[NHINO];
-
 int temp[14]={0};
 
 int main(int argc, const char * argv[]) {

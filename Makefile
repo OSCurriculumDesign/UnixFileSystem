@@ -231,6 +231,60 @@ cpp/igetput.cpp.s:
 	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/igetput.cpp.s
 .PHONY : cpp/igetput.cpp.s
 
+cpp/name.o: cpp/name.cpp.o
+
+.PHONY : cpp/name.o
+
+# target to build an object file
+cpp/name.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/name.cpp.o
+.PHONY : cpp/name.cpp.o
+
+cpp/name.i: cpp/name.cpp.i
+
+.PHONY : cpp/name.i
+
+# target to preprocess a source file
+cpp/name.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/name.cpp.i
+.PHONY : cpp/name.cpp.i
+
+cpp/name.s: cpp/name.cpp.s
+
+.PHONY : cpp/name.s
+
+# target to generate assembly for a file
+cpp/name.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/name.cpp.s
+.PHONY : cpp/name.cpp.s
+
+cpp/varseg.o: cpp/varseg.cpp.o
+
+.PHONY : cpp/varseg.o
+
+# target to build an object file
+cpp/varseg.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/varseg.cpp.o
+.PHONY : cpp/varseg.cpp.o
+
+cpp/varseg.i: cpp/varseg.cpp.i
+
+.PHONY : cpp/varseg.i
+
+# target to preprocess a source file
+cpp/varseg.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/varseg.cpp.i
+.PHONY : cpp/varseg.cpp.i
+
+cpp/varseg.s: cpp/varseg.cpp.s
+
+.PHONY : cpp/varseg.s
+
+# target to generate assembly for a file
+cpp/varseg.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/varseg.cpp.s
+.PHONY : cpp/varseg.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -279,6 +333,12 @@ help:
 	@echo "... cpp/igetput.o"
 	@echo "... cpp/igetput.i"
 	@echo "... cpp/igetput.s"
+	@echo "... cpp/name.o"
+	@echo "... cpp/name.i"
+	@echo "... cpp/name.s"
+	@echo "... cpp/varseg.o"
+	@echo "... cpp/varseg.i"
+	@echo "... cpp/varseg.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

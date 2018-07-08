@@ -59,21 +59,32 @@ extern User user[USERNUM];
 extern Inode * cur_path_inode;
 extern int user_id, file_block;
 
-
+// implement in ialloc.cpp
 extern Inode* iget(unsigned int dinode_id);
 extern bool iput(Inode* pinode);
+
+
+// implement in block.cpp
 extern unsigned short baloc();
 extern void bfree();
 extern void bwrite(unsigned short block_number, char * content);
 extern char * bread(unsigned short block_number, unsigned short length);
+
+// implement in ialloc.cpp
 extern bool ifree(unsigned int dinode_id);
 extern Inode* ialloc(void);
-extern void bwrite(unsigned short block_number, char * content);
+
+// ??? by Eric Lee
 extern void bfree(unsigned short block_number);
 extern unsigned short balloc();
+
+// implement in format.cpp
 extern void format();
-// extern struct inode *ialoc();
-// extern ifree();
+
+// implement in name.cpp
+extern unsigned int inode_id_by_name(char*);
+extern unsigned int insert_direct_to_dirlist_by_name(char* name, unsigned int dinode_id = 1);
+
 // extern unsigned int namei();
 // extern unsigned int iname();
 // extern unsigned int aces();

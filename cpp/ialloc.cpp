@@ -88,23 +88,28 @@ bool ifree(unsigned int dinode_id) {
     filsys.free_inode_num++;
     if(filsys.free_inode_stacktop != 0)
         push_free_inode_stk(dinode_id);
-    // 如果满了，我们把栈看成数组，找出dinode_id最大的那个淘汰出缓冲栈
-    // 并且将cached_index游标寄存器记录为数组中最小的dinode_id
     else {
-        unsigned int max_dinode_id = 0, min_dinode_id = UINT_MAX;
-        unsigned int max_index, min_index;
-        for(int i = 0; i < NICINOD; ++i) {
-            if(filsys.free_inodes_stack[i] > max_dinode_id) {
-                max_dinode_id = filsys.free_inodes_stack[i];
-                max_index = i;
-            }
-            if(filsys.free_inodes_stack[i] < min_dinode_id) {
-                min_dinode_id = filsys.free_inodes_stack[i];
-                min_index = i;
-            }
-        }
-        filsys.cached_inode_index = min_dinode_id + 1;
-        filsys.free_inodes_stack[max_index] = dinode_id;
+        // // 如果满了，我们把栈看成数组，找出dinode_id最大的那个淘汰出缓冲栈
+        // // 并且将cached_index游标寄存器记录为数组中最小的dinode_id
+        // unsigned int max_dinode_id = 0, min_dinode_id = UINT_MAX;
+        // unsigned int max_index, min_index;
+        // for(int i = 0; i < NICINOD; ++i) {
+        //     if(filsys.free_inodes_stack[i] > max_dinode_id) {
+        //         max_dinode_id = filsys.free_inodes_stack[i];
+        //         max_index = i;
+        //     }
+        //     if(filsys.free_inodes_stack[i] < min_dinode_id) {
+        //         min_dinode_id = filsys.free_inodes_stack[i];
+        //         min_index = i;
+        //     }
+        // }
+        // filsys.cached_inode_index = min_dinode_id + 1;
+        // filsys.free_inodes_stack[max_index] = dinode_id;
+
+        // 这里用到了成组链接法技术，这是第二个方案
+        filsys.cached_inode_index = dinode_id + 1;
+        filsys.free_inode_stacktop = NICINOD - 1;
+        filsys.free_inodes_stack[filsys.free_inode_stacktop] = dinode_id;
     }
     return true;
 }
