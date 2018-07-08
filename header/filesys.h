@@ -17,8 +17,8 @@ struct Filsys{
     unsigned int free_inode_num;
     // 空闲索引结点指针,是超级块栈顶指针
     unsigned short free_inode_stacktop;
-    // 空闲索引结点的数组
-    unsigned int free_inodes[NICINOD];
+    // 空闲索引结点的数组,是一个栈
+    unsigned int free_inodes_stack[NICINOD];
     // 被记录的索引结点
     unsigned int cached_inode_index;
 

@@ -6,7 +6,7 @@
 using namespace std;
 void format(){
     struct Inode * inode;
-    struct Direct dir_buf [BLOCKSIZ / (DIRSIZ+2)];
+    struct Direct dir_buf [BLOCKSIZ / (DIRSIZ+sizeof(unsigned int))];
     struct Pwd password [BLOCKSIZ/(PWDSIZ+4)];
     unsigned short block_buf[51];
     char * buf;
@@ -36,47 +36,47 @@ void format(){
     /*    1.creat the main directory and its sub dir etc and the file password */
     /* 0 empty dinode id */
     inode=iget(0);
-    inode->di_mode=DIEMPTY;
+    inode->data_mode=DIEMPTY;
     iput(inode);
 
     /* 1 main dir id */
     inode=iget(1);
-    inode->di_number=1;
-    inode->di_mode=DEFAULTMODE|DIDIR;
-    inode->di_size=3 *(DIRSIZ+2);
-    inode->di_addr[0]=1;    /* block 0tfl is used by the main directory */
-    strcpy(dir_buf[0].d_name, "..");
-    dir_buf[0].d_ino=1;
-    strcpy(dir_buf[1].d_name,".");
-    dir_buf[1].d_ino=1;
-    strcpy(dir_buf[2].d_name, "etc");
-    dir_buf[2].d_ino=2;
+    inode->associated=1;
+    inode->data_mode=DEFAULTMODE|DIDIR;
+    inode->data_size=3 *(DIRSIZ+sizeof(unsigned int));
+    inode->data_addr[0]=1;    /* block 0tfl is used by the main directory */
+    strcpy(dir_buf[0].dir_name, "..");
+    dir_buf[0].disk_ino=1;
+    strcpy(dir_buf[1].dir_name,".");
+    dir_buf[1].disk_ino=1;
+    strcpy(dir_buf[2].dir_name, "etc");
+    dir_buf[2].disk_ino=2;
     fseek(fd, DATASTART, SEEK_SET);
-    fwrite(dir_buf, 1, 3 * (DIRSIZ+2), fd);
+    fwrite(dir_buf, 1, 3 * (DIRSIZ+sizeof(unsigned int)), fd);
     iput(inode);
 
     /* 2 etc dir id */
     inode=iget(2);
-    inode ->di_number=1;
-    inode->di_mode=DEFAULTMODE|DIDIR;
-    inode->di_size=3 * (DIRSIZ+2);
-    inode->di_addr[0]=1;    /* block 0# is used by the etc */
-    strcpy (dir_buf[0].d_name, "..");
-    dir_buf[0].d_ino=1;
-    strcpy(dir_buf[1].d_name, "..");
-    dir_buf[1].d_ino=2;
-    strcpy(dir_buf[2].d_name, "password");
-    dir_buf[2].d_ino=3;
+    inode ->associated = 1;
+    inode->data_mode=DEFAULTMODE|DIDIR;
+    inode->data_size=3 * (DIRSIZ+sizeof(unsigned int));
+    inode->data_addr[0]=1;    /* block 0# is used by the etc */
+    strcpy (dir_buf[0].dir_name, "..");
+    dir_buf[0].disk_ino=1;
+    strcpy(dir_buf[1].dir_name, "..");
+    dir_buf[1].disk_ino=2;
+    strcpy(dir_buf[2].dir_name, "password");
+    dir_buf[2].disk_ino=3;
     fseek(fd, DATASTART+BLOCKSIZ * 1, SEEK_SET);
-    fwrite (dir_buf, 1,3* (DIRSIZ+2),fd);
+    fwrite (dir_buf, 1,3* (DIRSIZ+sizeof(unsigned int)),fd);
     iput(inode);
 
     /* 3 password id */
     inode=iget(3);
-    inode->di_number= 1;
-    inode->di_mode=DEFAULTMODE |  DIFILE;
-    inode->di_size=BLOCKSIZ;
-    inode->di_addr[0]=2;
+    inode->associated= 1;
+    inode->data_mode=DEFAULTMODE |  DIFILE;
+    inode->data_size=BLOCKSIZ;
+    inode->data_addr[0]=2;
     for (i=5; i<PWDNUM; i++){
         password[i].p_uid=0;
         password[i].p_gid=0;
@@ -89,15 +89,16 @@ void format(){
     /*    2. initialize the superblock */
     filsys.s_isize=DINODEBLK;
     filsys.s_fsize=FILEBLK;
-    filsys.s_ninode=DINODEBLK * BLOCKSIZ/DINODESIZ-4;
+    filsys.free_inode_num = DINODEBLK * BLOCKSIZ/DINODESIZ-4;
     filsys.s_nfree = FILEBLK-3;
     //超级块中 inode 信息的设置
     for (i=0; i<NICINOD; i++){
         /*    begin with 4, 0,1.2,3, is used by main, etc, password */
-        filsys.s_inode[i]=4+i;
+        filsys.free_inodes_stack[i] = 4 + i;
     }
-    filsys.s_pinode=0;
-    filsys.s_rinode=NICINOD+4;      /*铭记指针就是上限*/
+    // 栈满
+    filsys.free_inode_stacktop = 0;
+    filsys.cached_inode_index = NICINOD + 4;      /*铭记指针就是上限*/
 
     block_buf[NICFREE]=NICFREE;
     for(i=511;i>11;i-=50){

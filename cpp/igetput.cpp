@@ -24,15 +24,15 @@ static Dinode block_buf[BLOCKSIZ/DINODESIZ];
  *      
  */
 Inode* iget(unsigned int dinode_id) {
-    int inode_id = dinode_id%NICINOD;
+    int hash = dinode_id%NICINOD;
     unsigned long addr;
     Inode* tmp;
     Inode* newInode;
 
-    if(hinode[inode_id].head != nullptr) {
-        tmp = hinode[inode_id].head;
+    if(hinode[hash].head != nullptr) {
+        tmp = hinode[hash].head;
         while(tmp) {
-            if(tmp->mem_ino == inode_id) {
+            if(tmp->mem_ino == dinode_id) {
                 // 引用计数加一
                 tmp->ref_count++;
                 return tmp;
@@ -52,12 +52,12 @@ Inode* iget(unsigned int dinode_id) {
     fseek(fd, addr, SEEK_SET);
     fread((Dinode*)newInode, DINODESIZ, 1, fd);
 
-    // 4. 把新结点放到hinode[inode]队列中
+    // 4. 把新结点放到hinode[hash]队列中
     //    使用的是类似链表头插法的算法
-    newInode->next = hinode[inode_id].head;
+    newInode->next = hinode[hash].head;
     newInode->prev = newInode;
     if(newInode->next != nullptr) newInode->next->prev = newInode;
-    hinode[inode_id].head = newInode;
+    hinode[hash].head = newInode;
 
     // 5. 初始化Inode结点,新申请的结点默认没有引用计数，但是要将它返回给调用者，所以相当于
     //    引用了一次  
