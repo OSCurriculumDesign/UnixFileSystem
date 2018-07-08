@@ -25,13 +25,17 @@
 
 
 /*di_node*/
-#define DIEMPTY 00000
-#define DIFILE  01000
-#define DIDIR   02000
+#define DIEMPTY 000000
+#define DIFILE  001000
+#define DIDIR   002000
+#define DIDATA  004000
 /*user*/
-#define UDIREAD 00001
-#define UDIWRITE 00002
-#define UDIEXICUTE 00004
+#define UDIREAD 000001
+#define UDIWRITE 000002
+#define UDIEXICUTE 000004
+/*encrypt*/
+#define ENCRYPT 010000
+#define DISENCRYPY 000000
 /*group*/
 #define GDIREAD 00010
 #define GDIWRITE 00020

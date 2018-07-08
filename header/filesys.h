@@ -82,16 +82,19 @@ extern unsigned short balloc();
 extern void format();
 
 // implement in name.cpp
+// extern unsigned int namei();
+// extern unsigned int iname();
 extern unsigned int inode_id_by_name(char*);
 extern unsigned int insert_direct_to_dirlist_by_name(char* name, unsigned int dinode_id = 1);
 
-// extern unsigned int namei();
-// extern unsigned int iname();
+// implement in dir.cpp
+extern void list_dir();
+extern void mkdir();
+extern void chdir();
+extern void dirlt();
+
 // extern unsigned int aces();
-// extern _dir();
-// extern mkdir();
-// extern chdir();
-// extern dirlt();
+
 // extern unsigned short open();
 // extern create();
 // extern unsigned int read();

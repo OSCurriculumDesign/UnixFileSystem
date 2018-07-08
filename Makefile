@@ -150,6 +150,33 @@ cpp/block.cpp.s:
 	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/block.cpp.s
 .PHONY : cpp/block.cpp.s
 
+cpp/dir.o: cpp/dir.cpp.o
+
+.PHONY : cpp/dir.o
+
+# target to build an object file
+cpp/dir.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/dir.cpp.o
+.PHONY : cpp/dir.cpp.o
+
+cpp/dir.i: cpp/dir.cpp.i
+
+.PHONY : cpp/dir.i
+
+# target to preprocess a source file
+cpp/dir.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/dir.cpp.i
+.PHONY : cpp/dir.cpp.i
+
+cpp/dir.s: cpp/dir.cpp.s
+
+.PHONY : cpp/dir.s
+
+# target to generate assembly for a file
+cpp/dir.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/dir.cpp.s
+.PHONY : cpp/dir.cpp.s
+
 cpp/format.o: cpp/format.cpp.o
 
 .PHONY : cpp/format.o
@@ -324,6 +351,9 @@ help:
 	@echo "... cpp/block.o"
 	@echo "... cpp/block.i"
 	@echo "... cpp/block.s"
+	@echo "... cpp/dir.o"
+	@echo "... cpp/dir.i"
+	@echo "... cpp/dir.s"
 	@echo "... cpp/format.o"
 	@echo "... cpp/format.i"
 	@echo "... cpp/format.s"
