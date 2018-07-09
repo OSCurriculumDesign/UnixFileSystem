@@ -93,7 +93,7 @@ extern void mkdir(char*);
 extern void chdir(char*);
 
 // implement access.cpp
-extern bool access(int user_id, Inode* pinode, unsigned short access_mode);
+extern bool access(unsigned int user_id, Inode* pinode, unsigned short access_mode);
 
 // implement in file.cpp
 extern void free_all_blocks_of_the_old_file(Inode*, bool);

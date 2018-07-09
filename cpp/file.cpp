@@ -50,7 +50,7 @@ int create(unsigned int user_id, char* filename, unsigned short mode) {
         if(!access(user_id, pinode, mode)) {
             iput(pinode);
             fprintf(stdout, "\ncreate access is denied!\n");
-            return ;
+            return -1;
         } else free_all_blocks_of_the_old_file(pinode, false);
 
 

@@ -5,7 +5,7 @@
 
 // 实现filesys.h中的接口
 
-bool access(unsigned int user_id, Inode* pinode, unsigned int access_mode) {
+bool access(unsigned int user_id, Inode* pinode, unsigned short access_mode) {
     switch(access_mode) {
         case READ:
             if(pinode->data_mode & ODIREAD) return true;

@@ -123,6 +123,33 @@ unix_file_sys/fast:
 	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/build
 .PHONY : unix_file_sys/fast
 
+cpp/access.o: cpp/access.cpp.o
+
+.PHONY : cpp/access.o
+
+# target to build an object file
+cpp/access.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/access.cpp.o
+.PHONY : cpp/access.cpp.o
+
+cpp/access.i: cpp/access.cpp.i
+
+.PHONY : cpp/access.i
+
+# target to preprocess a source file
+cpp/access.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/access.cpp.i
+.PHONY : cpp/access.cpp.i
+
+cpp/access.s: cpp/access.cpp.s
+
+.PHONY : cpp/access.s
+
+# target to generate assembly for a file
+cpp/access.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/access.cpp.s
+.PHONY : cpp/access.cpp.s
+
 cpp/block.o: cpp/block.cpp.o
 
 .PHONY : cpp/block.o
@@ -176,6 +203,33 @@ cpp/dir.s: cpp/dir.cpp.s
 cpp/dir.cpp.s:
 	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/dir.cpp.s
 .PHONY : cpp/dir.cpp.s
+
+cpp/file.o: cpp/file.cpp.o
+
+.PHONY : cpp/file.o
+
+# target to build an object file
+cpp/file.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/file.cpp.o
+.PHONY : cpp/file.cpp.o
+
+cpp/file.i: cpp/file.cpp.i
+
+.PHONY : cpp/file.i
+
+# target to preprocess a source file
+cpp/file.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/file.cpp.i
+.PHONY : cpp/file.cpp.i
+
+cpp/file.s: cpp/file.cpp.s
+
+.PHONY : cpp/file.s
+
+# target to generate assembly for a file
+cpp/file.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/file.cpp.s
+.PHONY : cpp/file.cpp.s
 
 cpp/format.o: cpp/format.cpp.o
 
@@ -348,12 +402,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... unix_file_sys"
 	@echo "... edit_cache"
+	@echo "... cpp/access.o"
+	@echo "... cpp/access.i"
+	@echo "... cpp/access.s"
 	@echo "... cpp/block.o"
 	@echo "... cpp/block.i"
 	@echo "... cpp/block.s"
 	@echo "... cpp/dir.o"
 	@echo "... cpp/dir.i"
 	@echo "... cpp/dir.s"
+	@echo "... cpp/file.o"
+	@echo "... cpp/file.i"
+	@echo "... cpp/file.s"
 	@echo "... cpp/format.o"
 	@echo "... cpp/format.i"
 	@echo "... cpp/format.s"

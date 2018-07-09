@@ -7,12 +7,18 @@
 FILE * fd;
 Filsys filsys;
 Hinode hinode[NHINO];
+
 Dir dir;
+
 File sys_ofile[SYSOPENFILE];
 
-// extern Filsys filsys;
+User user[USERNUM];
+
+Inode * cur_path_inode;
+
+int user_id, file_block;
+
 // extern FILE * fd ;
 // extern Pwd pwd[PWDNUM];
-// extern User user[USERNUM];
-// extern Inode * cur_path_inode;
-// extern int user_id, file_block;
+
+
