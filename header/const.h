@@ -32,22 +32,22 @@
 /*user*/
 #define UDIREAD 000001
 #define UDIWRITE 000002
-#define UDIEXICUTE 000004
+#define UDIEXCUTE 000004
 /*encrypt*/
 #define ENCRYPT 010000
 #define DISENCRYPY 000000
 /*group*/
 #define GDIREAD 00010
 #define GDIWRITE 00020
-#define GDIEXICUTE 00040
+#define GDIEXCUTE 00040
 /*other*/
 #define ODIREAD 00100
 #define ODIWRITE 00200
-#define ODIEXICUTE 00400
-
-#define read 1
-#define write 2
-#define excute 4
+#define ODIEXCUTE 00400
+/*access mode*/
+#define READ 1
+#define WRITE 2
+#define EXCUTE 4
 
 #define DEFAULTMODE 00777
 

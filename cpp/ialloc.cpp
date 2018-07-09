@@ -37,7 +37,7 @@ static inline void pop_free_inode_stk(void) {
  * 描述：
  *      
  * 返回值：结果地址
- *      s_inod
+ *   
  */
 Inode* ialloc(void){
     // 结果指针
@@ -107,7 +107,7 @@ bool ifree(unsigned int dinode_id) {
         // filsys.free_inodes_stack[max_index] = dinode_id;
 
         // 这里用到了成组链接法技术，这是第二个方案
-        filsys.cached_inode_index = dinode_id + 1;
+        filsys.cached_inode_index = filsys.free_inodes_stack[0];
         filsys.free_inode_stacktop = NICINOD - 1;
         filsys.free_inodes_stack[filsys.free_inode_stacktop] = dinode_id;
     }

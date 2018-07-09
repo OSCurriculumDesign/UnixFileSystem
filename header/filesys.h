@@ -90,10 +90,13 @@ extern unsigned int insert_direct_to_dirlist_by_name(char* name, unsigned int di
 // implement in dir.cpp
 extern void list_dir();
 extern void mkdir(char*);
-extern void chdir();
-extern void dirlt();
+extern void chdir(char*);
+
+// implement access.cpp
+extern bool access(int user_id, Inode* pinode, unsigned short access_mode);
 
 // extern unsigned int aces();
+// extern void dirlt(int );
 
 // extern unsigned short open();
 // extern create();
