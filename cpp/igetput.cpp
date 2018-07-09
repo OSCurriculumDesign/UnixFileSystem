@@ -16,14 +16,14 @@ static Dinode block_buf[BLOCKSIZ/DINODESIZ];
  * iget 函数
  * 功能：根据请求的inode的编号向内存中已经组织好的inode组织表的inode
  *      如果内存中没有，那么从硬盘中读取相对应的dinode并将其扩展成inode
- *      组织编入inode表中 
+ *      组织编入inode表中
  * 参数：inode或者dinode的id
  * 描述：
  *      如果inode已经被组织进入内存中了，直接返回内存中相对应的inode的地址
  *      否则返回新申请的inode块的地址
  *      一般而言，调用这个函数，我们默认调用者要使用或者查看这个文件，所以引用计数会加一
  * 返回值：所要的inode的指针
- *      
+ *
  */
 Inode* iget(unsigned int dinode_id) {
     int hash = dinode_id%NICINOD;
@@ -62,7 +62,7 @@ Inode* iget(unsigned int dinode_id) {
     hinode[hash].head = newInode;
 
     // 5. 初始化Inode结点,新申请的结点默认没有引用计数，但是要将它返回给调用者，所以相当于
-    //    引用了一次  
+    //    引用了一次
     newInode->ref_count = 0 + 1;
     // 默认没有改变当前inode
     newInode->flag = 0;
@@ -84,7 +84,7 @@ Inode* iget(unsigned int dinode_id) {
  *      把给定的inode结点的引用计数减一，如果引用计数归零，删除该inode，如果成功执行
  *      释放结点的操作，返回true否则返回false
  * 返回值：释放成功与否
- *      
+ *
  */
 
 bool iput(Inode* pinode) {
@@ -94,7 +94,7 @@ bool iput(Inode* pinode) {
         return false;
     } else {
         if(pinode->associated != 0) {
-            // 如果没有关联文件，写回
+            // 如果有关联文件，写回
             long addr = DINODESTART + pinode->mem_ino*DINODESIZ;
             fseek(fd, addr, SEEK_SET);
             fwrite((Dinode*)pinode, DINODESIZ, 1, fd);

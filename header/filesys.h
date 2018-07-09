@@ -6,7 +6,7 @@
 #include "inode.h"
 
 struct Filsys{
-    // 
+    //
     unsigned short s_isize;
     unsigned short s_fsize;
     unsigned int s_nfree;
@@ -98,6 +98,9 @@ extern bool access(unsigned int user_id, Inode* pinode, unsigned short access_mo
 // implement in file.cpp
 extern void free_all_blocks_of_the_old_file(Inode*, bool);
 extern int create(unsigned int user_id, char* filename, unsigned short mode = DEFAULTMODE);
+extern File* open(unsigned int user_id, char* filename, unsigned short openmode = DEFAULTMODE);
+extern int close(unsigned int user_id, FILE* fp);
+extern int del(unsigned int user_id, char* filename);
 
 
 // extern unsigned int aces();

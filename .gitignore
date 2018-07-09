@@ -4,3 +4,9 @@ CMakeFiles/*
 
 ./zlibDemo.sh
 ./sample.*
+
+.DS_Store
+
+CMakeCache.txt
+cmake_install.cmake
+Makefile
