@@ -89,7 +89,7 @@ extern unsigned int insert_direct_to_dirlist_by_name(char* name, unsigned int di
 
 // implement in dir.cpp
 extern void list_dir();
-extern void mkdir();
+extern void mkdir(char*);
 extern void chdir();
 extern void dirlt();
 

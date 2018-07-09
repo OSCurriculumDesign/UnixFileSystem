@@ -80,9 +80,51 @@ void list_dir() {
     }
 }
 
+// mkdir
+void mkdir(char* newdir_name) {
+    int dir_id, dir_pos;
+    Inode* pinode =  nullptr;
+    unsigned int block_id;
 
-void mkdir() {
+    Direct buf[BLOCKSIZ/(DIRSIZ+sizeof(unsigned int))];
 
+    dir_id = inode_id_by_name(newdir_name);
+    // 找到同名的
+    if(dir_id != 0) {
+        pinode = iget(dir_id);
+        if(pinode->data_mode & DIDIR) fprintf(stdout, "\n%20s has already existed!\n", newdir_name);
+        else if(pinode->data_mode & DIFILE) fprintf(stdout, "\n%20s is a file name!\n");
+        else fprintf(stdout, "\nunknown error! This is a data inode\n");
+    } else {
+        dir_pos = insert_direct_to_dirlist_by_name(newdir_name);
+        pinode = ialloc();
+        dir_id = pinode->mem_ino;
+        dir.direct[dir_pos].disk_ino = pinode->mem_ino;
+        dir.size++;
+
+        /*  */
+        strcpy(buf[0].dir_name, ".");
+        buf[0].disk_ino = dir_id;
+        strcpy(buf[1].dir_name, "..");
+        buf[1].disk_ino = cur_path_inode->mem_ino;
+        buf[2].disk_ino = 0;
+
+        // 请求 Eric lee review
+        block_id = balloc();
+
+        fseek(fd, DATASTART+block_id*BLOCKSIZ, SEEK_SET);
+        fwrite(buf, BLOCKSIZ, 1, fd);
+
+        pinode->data_size = 2*(DIRSIZ+sizeof(unsigned int));
+        pinode->associated = 1;
+        pinode->data_mode = user[user_id].u_default_mode | DIDIR;
+        pinode->uid = user[user_id].u_uid;
+        pinode->gid = user[user_id].u_gid;
+        pinode->data_addr[0] = block_id;
+        iput(pinode);
+        pinode = nullptr;
+        return ;
+    }
 }
 
 void chdir() {
@@ -90,5 +132,5 @@ void chdir() {
 }
 
 void dirlt() {
-    
+
 }
