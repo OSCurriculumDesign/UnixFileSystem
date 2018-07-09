@@ -95,6 +95,10 @@ extern void chdir(char*);
 // implement access.cpp
 extern bool access(int user_id, Inode* pinode, unsigned short access_mode);
 
+// implement in file.cpp
+extern void create(unsigned int user_id, char* filename, unsigned short mode);
+
+
 // extern unsigned int aces();
 // extern void dirlt(int );
 

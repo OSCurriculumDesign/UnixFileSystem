@@ -1,4 +1,6 @@
 #include <cstdio>
+#include <cassert>
+
 #include "inode.h"
 #include "filesys.h"
 //#include "block.cpp"i
@@ -97,8 +99,32 @@ bool iput(Inode* pinode) {
             fseek(fd, addr, SEEK_SET);
             fwrite((Dinode*)pinode, DINODESIZ, 1, fd);
         } else {
-            unsigned int block_num = pinode->data_size/BLOCKSIZ;
-            for(int i = 0; i < block_num; ++i) bfree(pinode->data_addr[i]);
+            unsigned int block_num = pinode->data_size/BLOCKSIZ + (pinode->data_size%BLOCKSIZ?1:0);
+            if(block_num <= 10)
+                for(int i = 0; i < block_num && i < NADDR - 2; ++i) bfree(pinode->data_addr[i]);
+
+            else if(block_num > 10 && block_num <= NADDR - 2 + NADDR) {
+                for(int i = 0; i < NADDR - 2; ++i) bfree(pinode->data_addr[i]);
+
+                Inode* next = iget(pinode->data_addr[NADDR - 2]);
+                assert(next->data_mode & DIDATA);
+                for(int i = NADDR - 2; i < block_num; ++i) bfree(next->data_addr[i - NADDR + 2]);
+                iput(next); next = nullptr;
+
+            } else {
+                for(int i = 0; i < NADDR - 2; ++i) bfree(pinode->data_addr[i]);
+
+                Inode* next = iget(pinode->data_addr[NADDR - 2]);
+                assert(next->data_mode & DIDATA);
+                for(int i = NADDR - 2; i < NADDR - 2 + NADDR; ++i) bfree(next->data_addr[i - NADDR + 2]);
+                iput(next);
+
+                next = iget(pinode->data_addr[NADDR - 1]);
+                assert(next->data_mode & DIDATA);
+                for(int i = NADDR - 2 + NADDR; i < NADDR - 2 + 2*NADDR && i < block_num; ++i)
+                    bfree(next->data_addr[i - 2*NADDR + 2]);
+                iput(next); next = nullptr;
+            }
             ifree(pinode->mem_ino);
         }
 
