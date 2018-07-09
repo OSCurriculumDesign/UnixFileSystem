@@ -24,8 +24,9 @@ unsigned int inode_id_by_name(char* name) {
 /**
  *  根据名字生成一个新的direct对象插入dir表中
  *  如果找到空位则给新的direct名字赋值, 如果有条件的话
- *  最好给定dino的值，并且返回这个空位的索引
- *  如果没有这个空位，返回0
+ *  最好给定dino的值，
+ *  返回这个空位的索引
+ *  如果没有这个空位，返回0,拒绝插入操作
  *  
  */
 unsigned int insert_direct_to_dirlist_by_name(char* name, unsigned int dinode_id) {

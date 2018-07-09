@@ -96,7 +96,8 @@ extern void chdir(char*);
 extern bool access(int user_id, Inode* pinode, unsigned short access_mode);
 
 // implement in file.cpp
-extern void create(unsigned int user_id, char* filename, unsigned short mode);
+extern void free_all_blocks_of_the_old_file(Inode*, bool);
+extern int create(unsigned int user_id, char* filename, unsigned short mode = DEFAULTMODE);
 
 
 // extern unsigned int aces();

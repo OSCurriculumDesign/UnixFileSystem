@@ -8,8 +8,8 @@ FILE * fd;
 Filsys filsys;
 Hinode hinode[NHINO];
 Dir dir;
+File sys_ofile[SYSOPENFILE];
 
-// extern File sys_ofile[SYSOPENFILE];
 // extern Filsys filsys;
 // extern FILE * fd ;
 // extern Pwd pwd[PWDNUM];
