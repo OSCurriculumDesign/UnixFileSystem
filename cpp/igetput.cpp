@@ -1,29 +1,13 @@
 #include <cstdio>
 #include <cassert>
-#include <cstdlib>
 
 #include "inode.h"
 #include "filesys.h"
-//#include "block.cpp"ihinode[i].head)
+//#include "block.cpp"i
 //#include "format.cpp"
 
 // 静态的辅助函数和变量
 static Dinode block_buf[BLOCKSIZ/DINODESIZ];
-
-static inline void print_hinodes_head(int igetid) {
-    printf("When iget(%d) and not found: \n", igetid);
-    printf("Hinode head:");
-    for(int i = 0; i < NHINO; ++i)
-    {
-        if(!hinode[i].head){
-         printf( " %p", hinode[i].head);
-         }
-          else{
-               printf(" %p, and mode is %d",hinode[i].head, hinode[i].head->data_mode);
-          }
-    }
-    sysp();
-}
 
 
 // 实现inode.h中的接口
@@ -46,9 +30,9 @@ Inode* iget(unsigned int dinode_id) {
     unsigned long addr;
     Inode* tmp;
     Inode* newInode;
+//    printf("lalala %p\n",newInode);
 
     if(hinode[hash].head != nullptr) {
-        bk("in iget, we found dinode_id in hash table");
         tmp = hinode[hash].head;
         while(tmp) {
             if(tmp->mem_ino == dinode_id) {
@@ -59,18 +43,17 @@ Inode* iget(unsigned int dinode_id) {
         }
     }
 
-    print_hinodes_head(dinode_id);
-
     // 不存在id符合要求的inode_id
     // 1. 计算dinode在磁盘中的地址
     addr = DINODESTART + dinode_id*DINODESIZ;
 
     // 2. 向堆区申请新的Inode结构体
-    bk("begin malloc new Inode");
-    newInode = (Inode*)malloc(sizeof(Inode));
-    printf("\nnew Inode: %p\n", newInode);
-    bk("end malloc new Inode");
-
+    for(int aa=0;aa<10;aa++){
+        newInode = new Inode();
+//        printf("While iget(%d) in %d time, new INODE's address: %p\n",dinode_id,aa,newInode);
+    }
+    newInode = new Inode();
+    printf("While iget(%d), new INODE's address: %p\n",dinode_id,newInode);
     // 3. 把磁盘中的Dinode读取进入Inode中
     /* --- 这里很容易出bug，注意这里 --- */
     fseek(fd, addr, SEEK_SET);
@@ -128,7 +111,7 @@ bool iput(Inode* pinode) {
             pinode->next->prev = pinode->prev;
             pinode->prev->next = pinode->next;
         }
-        free(pinode);
+        delete pinode;
     }
     return true;
 }
