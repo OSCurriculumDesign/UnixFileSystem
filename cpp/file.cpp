@@ -46,7 +46,7 @@ void free_all_blocks_of_the_old_file(Inode* pinode, bool i_free) {
 int create(unsigned int user_id, char* filename, unsigned short mode) {
     unsigned int dino, di_ith;
     Inode* pinode = nullptr;
-    int i, j;
+    int i, j,k;
     dino = inode_id_by_name(filename);
     // 已经存在
     if(dino != 0) {
@@ -63,6 +63,7 @@ int create(unsigned int user_id, char* filename, unsigned short mode) {
         return 0;
     } else { // 不存在
         if(dir.size >= DIRNUM){
+            fprintf(stdout, "\ntoo many files\n");
             return -1;
         }
         pinode = ialloc();
@@ -71,9 +72,20 @@ int create(unsigned int user_id, char* filename, unsigned short mode) {
 
         dir.direct[di_ith].disk_ino = pinode->mem_ino;
         if(di_ith < DIRNUM - 1) dir.direct[di_ith + 1].disk_ino = 0;
-        pinode->data_mode = user[user_id].u_default_mode | DIFILE;
-        pinode->uid = user[user_id].u_uid;
-        pinode->gid = user[user_id].u_gid;
+        //find user
+        for(k=0;k<USERNUM;k++){
+            if(user_id == user[k].u_uid){
+                break;
+            }
+        }
+        if(k == USERNUM){
+            fprintf(stdout, "can not find this user\n");
+            return -1;
+        }
+
+        pinode->data_mode = user[k].u_default_mode | DIFILE;
+        pinode->uid = user[k].u_uid;
+        pinode->gid = user[k].u_gid;
         pinode->data_size = 0;
         pinode->associated = 1;
 
@@ -108,12 +120,6 @@ File* open(unsigned int user_id, char* filename, unsigned short openmode) {
         return nullptr;
     }
 
-    // struct File{
-    //     char f_flag;
-    //     unsigned int f_count;
-    //     Inode* f_inode;
-    //     unsigned long f_off;
-    // };
     File * fp = new File();
     fp->f_inode = pinode;
     return fp;

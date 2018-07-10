@@ -102,7 +102,7 @@ extern bool access(unsigned int user_id, Inode* pinode, unsigned short access_mo
 extern void free_all_blocks_of_the_old_file(Inode*, bool);
 extern int create(unsigned int user_id, char* filename, unsigned short mode = DEFAULTMODE);
 extern File* open(unsigned int user_id, char* filename, unsigned short openmode = DEFAULTMODE);
-extern int close(unsigned int user_id, FILE* fp);
+extern int close(unsigned int user_id, File* fp);
 extern int del(unsigned int user_id, char* filename);
 extern int read(File *fd,char *buff,unsigned int size);
 extern int write(File *fd,char *buff,unsigned int size);
