@@ -38,12 +38,12 @@ static void test_sizeof_Direct(void) {
 static int test_dir() {
     format();
     list_dir();
-    mkdir("new");    
+    mkdir("new");
     list_dir();
     bk("\n------------------\n");
 
     Inode* pinode = iget(dir.direct[dir.size-1].disk_ino);
-    printf("\npinode of new dir is mode: %d, disk_ino: %d, data_size: %d, sizeof_dir: %d, addr: %d", 
+    printf("\npinode of new dir is mode: %d, disk_ino: %d, data_size: %d, sizeof_dir: %d, addr: %d",
     pinode->data_mode, pinode->mem_ino, pinode->data_size, DIRSIZ + sizeof(unsigned int), pinode->data_addr[0]);
     iput(pinode); pinode = nullptr;
 
@@ -59,11 +59,13 @@ static int test_log(){
     int uid = add_user(a,a,0);
     int uid2 = add_user(a,a,0);
     printf("%d %d\n",uid,uid2 );
-    for(int i=0;i<10;i++){
-        printf("-%d\n",password[i].p_uid );
-    }
     login(uid,a);
+    create(uid,a,WRITE);
+    File*fd = open(uid,a,WRITE);
+    close(uid,fd);
     logout(uid);
+    // login(uid2,a);
+    // logout(uid2);
     return 0;
 }
 
