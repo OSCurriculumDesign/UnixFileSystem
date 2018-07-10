@@ -23,16 +23,16 @@ void format(){
     free(buf);
 
     /*0.initialize the password */
-    password[0].p_uid= 2116; password[0].p_gid= 03;
+    password[0].p_uid= 0; password[0].p_gid= 03;
     strcpy(password[0].password, "dddd");
-    password[1].p_uid= 2117; password[1].p_gid=03;
-    strcpy(password[1].password, "bbbb");
-    password[2].p_uid= 2118; password[2].p_gid=04;
-    strcpy(password[2].password, "abcd");
-    password[3].p_uid= 2119; password[3].p_gid=04;
-    strcpy(password[3].password, "cccc");
-    password[4].p_uid= 2220; password[4].p_gid=05;
-    strcpy(password[4].password, "eeee");
+    // password[1].p_uid= 2117; password[1].p_gid=03;
+    // strcpy(password[1].password, "bbbb");
+    // password[2].p_uid= 2118; password[2].p_gid=04;
+    // strcpy(password[2].password, "abcd");
+    // password[3].p_uid= 2119; password[3].p_gid=04;
+    // strcpy(password[3].password, "cccc");
+    // password[4].p_uid= 2220; password[4].p_gid=05;
+    // strcpy(password[4].password, "eeee");
 
     /*    1.creat the main directory and its sub dir etc and the file password */
     /* 0 empty dinode id */
@@ -82,10 +82,13 @@ void format(){
     inode->data_mode=DEFAULTMODE |  DIFILE;
     inode->data_size=BLOCKSIZ;
     inode->data_addr[0]=2;
-    for (i=5; i<PWDNUM; i++){
+    for (i=1; i<PWDNUM; i++){
         password[i].p_uid=0;
         password[i].p_gid=0;
         strcpy(password[i].password,"    ");
+    }
+    for (i=0; i<USERNUM; i++){
+        user[i].u_uid == 0;
     }
     fseek(fd,DATASTART+2*BLOCKSIZ, SEEK_SET);
     fwrite(password, 1, BLOCKSIZ,fd);
