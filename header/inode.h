@@ -1,6 +1,8 @@
 #ifndef INODE_H
 #define INODE_H
 
+#include <vector>
+#include <utility>
 #include "const.h"
 
 /* 文件系统数据结构 */
@@ -70,13 +72,20 @@ struct Dir {
     int size;
 };
 
-// ialloc.cpp实现这两个接口
-Inode* ialloc(void);
-bool ifree(unsigned int dinode_id);
+// ialloc.cpp实现接口
+extern Inode* ialloc(void);
+extern bool ifree(unsigned int dinode_id);
 
-// igetput.cpp实现这两个接口
-Inode* iget(unsigned int dinode_id);
-bool iput(Inode* inode_ptr);
+extern void halt_inodes(void);
+extern void restore_inode_state(void);
+
+
+// igetput.cpp实现接口
+extern Inode* iget(unsigned int dinode_id);
+extern bool iput(Inode* inode_ptr);
+
+extern std::pair<unsigned int, std::vector<unsigned int>> get_datsz_and_blocks_addrs(unsigned int inode_id);
+
 
 
 #endif
