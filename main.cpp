@@ -37,16 +37,19 @@ static void test_sizeof_Direct(void) {
 
 static int test_dir() {
     format();
-    bk(" end of format");
-
     list_dir();
-    bk(" before mkdir");
+    mkdir("new");    
+    list_dir();
+    bk("\n------------------\n");
 
-    // mkdir("new");
+    Inode* pinode = iget(dir.direct[dir.size-1].disk_ino);
+    printf("\npinode of new dir is mode: %d, disk_ino: %d, data_size: %d, sizeof_dir: %d, addr: %d", 
+    pinode->data_mode, pinode->mem_ino, pinode->data_size, DIRSIZ + sizeof(unsigned int), pinode->data_addr[0]);
+    iput(pinode); pinode = nullptr;
 
-    // bk(" end mkdir");
-    // list_dir();
-    // chdir("new");
+    chdir("new");
+    bk(" ");
+    list_dir();
     return 0;
 }
 

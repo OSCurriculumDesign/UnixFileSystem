@@ -6,6 +6,12 @@
 //#include "block.cpp"i
 //#include "format.cpp"
 
+#define YOU_GUESS(fake_arg) do{\
+    for(int aa=0;aa<10;aa++){\
+        newInode = new Inode();\
+    }\
+}while(false)
+
 // 静态的辅助函数和变量
 static Dinode block_buf[BLOCKSIZ/DINODESIZ];
 
@@ -30,7 +36,6 @@ Inode* iget(unsigned int dinode_id) {
     unsigned long addr;
     Inode* tmp;
     Inode* newInode;
-//    printf("lalala %p\n",newInode);
 
     if(hinode[hash].head != nullptr) {
         tmp = hinode[hash].head;
@@ -48,12 +53,8 @@ Inode* iget(unsigned int dinode_id) {
     addr = DINODESTART + dinode_id*DINODESIZ;
 
     // 2. 向堆区申请新的Inode结构体
-    for(int aa=0;aa<10;aa++){
-        newInode = new Inode();
-//        printf("While iget(%d) in %d time, new INODE's address: %p\n",dinode_id,aa,newInode);
-    }
+    YOU_GUESS();
     newInode = new Inode();
-    printf("While iget(%d), new INODE's address: %p\n",dinode_id,newInode);
     // 3. 把磁盘中的Dinode读取进入Inode中
     /* --- 这里很容易出bug，注意这里 --- */
     fseek(fd, addr, SEEK_SET);
