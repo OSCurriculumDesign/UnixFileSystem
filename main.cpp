@@ -57,13 +57,14 @@ static int test_log(){
     format();
     char *a = "eeee";
     login(2220,a);
+    logout(2220);
     return 0;
 }
 
 // cli入口函数
 
 int main(int argc, const char * argv[]) {
-    // test_log();
+    test_log();
     // format();
 
     // unsigned int block_buf[51];
@@ -91,7 +92,7 @@ int main(int argc, const char * argv[]) {
     // }
     // bwrite(234, "123123");
     // cout<< bread(234,512) <<endl;
-    test_dir();
+    // test_dir();
     return 0;
 }
 
