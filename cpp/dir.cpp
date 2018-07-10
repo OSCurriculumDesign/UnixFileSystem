@@ -51,8 +51,16 @@ static void print_block_chain(Inode* pinode) {
         } else fprintf(stdout, " Err! too much block to show\n");
 
     } else if(pinode->data_mode & DIDIR){
-        fprintf(stdout, "<dir>block chain: %d\n", pinode->mem_ino);
+        fprintf(stdout, " <dir>block chain: %d\n", pinode->mem_ino);
     } else if(pinode->data_mode & DIDATA) fprintf(stdout, " Sorry, this is a data inode\n");
+}
+
+static inline void clear_cur_dir(void) {
+    for(int i = 0; i < DIRNUM; ++i) {
+        strcpy(dir.direct[i].dir_name, "EMPTY");
+        dir.direct[i].disk_ino = 0;
+    }
+    dir.size = 0;
 }
 
 // ls操作
@@ -60,7 +68,6 @@ void list_dir() {
     unsigned short data_mode;
     Inode* pinode;
 
-    bk(" ");
 
 
     fprintf(stdout, "\ncurr dir size: %d\n", dir.size);
@@ -70,8 +77,8 @@ void list_dir() {
             fprintf(stdout, "%20s  ", dir.direct[i].dir_name);
             pinode = iget(dir.direct[i].disk_ino);
 
-            printf("\n%p is pinode null? direct[i].disk_ino is %d\n", pinode, dir.direct[i].disk_ino);
-            bk(" test the ptr of the inode");
+            // printf("\n%p is pinode null? direct[i].disk_ino is %d\n", pinode, dir.direct[i].disk_ino);
+            // bk(" test the ptr of the inode");
     
             data_mode = pinode?pinode->data_mode:DIEMPTY;
             if(data_mode & DIFILE) fprintf(stdout, " file   ");
@@ -93,14 +100,12 @@ void mkdir(char* newdir_name) {
     Inode* pinode =  nullptr;
     unsigned int block_id;
 
-    bk(" ");
 
     Direct buf[BLOCKSIZ/(DIRSIZ+sizeof(unsigned int))];
 
     int dir_id = inode_id_by_name(newdir_name);
     // 找到同名的
     if(dir_id != 0) {
-        bk(" ");
         pinode = iget(dir_id);
         if(pinode->data_mode & DIDIR) fprintf(stdout, "\n%20s has already existed!\n", newdir_name);
         else if(pinode->data_mode & DIFILE) fprintf(stdout, "\n%20s is a file name!\n");
@@ -112,7 +117,6 @@ void mkdir(char* newdir_name) {
             return ;
         }
 
-        bk(" ");
         dir_pos = insert_direct_to_dirlist_by_name(newdir_name);
         pinode = ialloc();
         dir_id = pinode->mem_ino;
@@ -124,27 +128,20 @@ void mkdir(char* newdir_name) {
         buf[1].disk_ino = cur_path_inode->mem_ino;
         buf[2].disk_ino = 0;
 
-        // dir.direct[dir.size-1].disk_ino = dir_id;
-        // strcpy(dir.direct[dir.size-1].dir_name, newdir_name);
-        // dir.size++;
-        // dir.direct[dir.size-1].disk_ino = 0;
+        dir.size++;
+        dir.direct[dir.size-1].disk_ino = dir_id;
+        strcpy(dir.direct[dir.size-1].dir_name, newdir_name);
 
-        // printf("123\n");
-        // printf("current dir no. is %s\n",dir.direct[dir.size-1].dir_name);
-        // for(int i=0;i<dir.size;i++){
-        //     printf("%s\n",dir.direct[i].dir_name);
-        // }
+        if(dir.size < DIRNUM) dir.direct[dir.size].disk_ino = 0;
 
         // 请求 Eric lee review
         block_id = balloc();
 
-        bk("3");
 
 
         fseek(fd, DATASTART+block_id*BLOCKSIZ, SEEK_SET);
         fwrite(buf, BLOCKSIZ, 1, fd);
 
-        bk("4");
 
 
         pinode->data_size = 2*(DIRSIZ+sizeof(unsigned int));
@@ -156,7 +153,6 @@ void mkdir(char* newdir_name) {
         iput(pinode);
         pinode = nullptr;
 
-        bk("5");
 
         return ;
     }
@@ -171,6 +167,8 @@ void chdir(char* dirname) {
     unsigned int block_id;
 
     dir_id = inode_id_by_name(dirname);
+    bk("dir_id");
+    printf("dir_id == %d", dir_id);
 
     // not found
     if(dir_id == 0)
@@ -179,34 +177,13 @@ void chdir(char* dirname) {
         pinode = iget(dir_id);
         // 没有足够的权限
         if(!access(user_id, pinode, user[user_id].u_default_mode)) {
-            fprintf(stdout, "\n%d has not a`ccess to the dir %20s\n", user[user_id].u_uid, dirname);
+            fprintf(stdout, "\n%d has not access to the dir %20s\n", user[user_id].u_uid, dirname);
             iput(pinode); pinode = nullptr;
             return ;
         }
         // 清空缓冲dir
-        for(int i = 0; i < dir.size; ++i) {
-            for(int j = 0; j < DIRNUM; ++j) {
-                if(!dir.direct[j].disk_ino == 0) break;
-                memcpy(&dir.direct[j], &dir.direct[i], DIRSIZ+sizeof(unsigned int));
-                dir.direct[j].disk_ino = 0;
-            }
-        }
+        clear_cur_dir();
 
-        // // 这是书上的代码，个人觉得不正确,不需要释放
-        // // 写回去目前的inode
-        // int sz = cur_path_inode->data_size/BLOCKSIZ + (cur_path_inode->data_size%BLOCKSIZ?1:0);
-        // for(int i = 0; i < sz; ++i) {
-        //     bfree(cur_path_inode->data_addr[i]);
-        // }
-
-        // for(int i = 0; i < dir.size; i+=BLOCKSIZ/(DIRSIZ + sizeof(unsigned int))) {
-        //     block_id = balloc();
-        //     cur_path_inode->data_addr[i] = block_id;
-        //     fseek(fd, DATASTART+block_id*BLOCKSIZ, SEEK_SET);
-        //     fwrite(&dir.direct[0], BLOCKSIZ, 1, fd);
-        // }
-
-        // cur_path_inode->data_size = dir.size*(DIRSIZ +sizeof(unsigned int));
 
         // 这下面是我自己的实现
         iput(cur_path_inode);
@@ -216,7 +193,7 @@ void chdir(char* dirname) {
         int sz = pinode->data_size/BLOCKSIZ + (pinode->data_size%BLOCKSIZ?1:0);
         for(int i = 0, j = 0; i < sz; ++i) {
             fseek(fd, DATASTART+pinode->data_addr[i]*BLOCKSIZ, SEEK_SET);
-            fread(&dir.direct[j], BLOCKSIZ, 1, fd);
+            fread(&(dir.direct[j]), BLOCKSIZ, 1, fd);
             j += BLOCKSIZ/(DIRSIZ+sizeof(unsigned int));    
         }
     }
