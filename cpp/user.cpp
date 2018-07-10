@@ -46,5 +46,17 @@ int init_root_user(char *password){
 }
 
 int logout(unsigned short uid){
-
+    int i,j;
+    Inode * inode;
+    for(i=0;i<USERNUM;i++){
+        if(uid == user[i].u_uid){
+            break;
+        }
+    }
+    if(i == USERNUM){
+        fprintf(stdout, "no such user\n");
+        return 0;
+    }
+    user[i].u_uid = -1;
+    fprintf(stdout, "logout success\n");
 }
