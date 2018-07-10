@@ -2,6 +2,7 @@
 #define FILESYS_H
 
 #include <cstdio>
+
 #include "const.h"
 #include "inode.h"
 #include "test.h"
@@ -111,6 +112,12 @@ extern int login(unsigned short uid, char* password);
 extern int init_root_user(char *password);
 extern int logout(unsigned short uid);
 extern int add_user(char *username,char *password,int group);
+
+// implement in boot.cpp
+extern int shutDown();
+extern int start();
+
+
 // extern unsigned int aces();
 // extern void dirlt(int );
 

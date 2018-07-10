@@ -1,5 +1,7 @@
 #include <cstdio>
 #include <climits>
+#include <cstring>
+
 #include "inode.h"
 #include "filesys.h"
 //#include "format.cpp"
@@ -112,4 +114,29 @@ bool ifree(unsigned int dinode_id) {
         filsys.free_inodes_stack[filsys.free_inode_stacktop] = dinode_id;
     }
     return true;
+}
+
+
+void halt_inodes(void) {
+    for(int i = 0; i < NHINO; ++i) {
+        Inode* tmp = hinode[i].head;
+        while(tmp) {
+            tmp->ref_count = 0 + 1; // 即将被放入磁盘
+            iput(tmp);
+        }
+    }
+}
+
+void restore_inode_state() {
+    cur_path_inode = iget(1);
+
+    dir.direct[0].disk_ino = 1;
+    strcpy(dir.direct[0].dir_name, ".");
+     dir.direct[1].disk_ino = 1;
+    strcpy(dir.direct[1].dir_name, "..");
+     dir.direct[2].disk_ino = 2;
+    strcpy(dir.direct[2].dir_name, "etc");
+
+    dir.size = 3;
+    dir.direct[dir.size].disk_ino = 0;
 }
