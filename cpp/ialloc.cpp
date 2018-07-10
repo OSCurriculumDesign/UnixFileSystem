@@ -129,14 +129,18 @@ void halt_inodes(void) {
 
 void restore_inode_state() {
     cur_path_inode = iget(1);
+    Direct dir_buf [BLOCKSIZ / (DIRSIZ+sizeof(unsigned int))];
+    fseek(fd, DATASTART+cur_path_inode->data_addr[0]*BLOCKSIZ, SEEK_SET);
+    fread(dir_buf, BLOCKSIZ, 1, fd);
+    memcpy(dir.direct, dir_buf, cur_path_inode->data_size);
 
-    dir.direct[0].disk_ino = 1;
-    strcpy(dir.direct[0].dir_name, ".");
-     dir.direct[1].disk_ino = 1;
-    strcpy(dir.direct[1].dir_name, "..");
-     dir.direct[2].disk_ino = 2;
-    strcpy(dir.direct[2].dir_name, "etc");
+//    dir.direct[0].disk_ino = 1;
+//    strcpy(dir.direct[0].dir_name, ".");
+//    dir.direct[1].disk_ino = 1;
+//    strcpy(dir.direct[1].dir_name, "..");
+//    dir.direct[2].disk_ino = 2;
+//    strcpy(dir.direct[2].dir_name, "etc");
 
-    dir.size = 3;
-    dir.direct[dir.size].disk_ino = 0;
+//    dir.size = 3;
+//    dir.direct[dir.size].disk_ino = 0;
 }
