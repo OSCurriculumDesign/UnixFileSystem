@@ -4,7 +4,7 @@
 
 #include "inode.h"
 #include "filesys.h"
-//#include "block.cpp"i
+//#include "block.cpp"ihinode[i].head)
 //#include "format.cpp"
 
 // 静态的辅助函数和变量
@@ -12,7 +12,16 @@ static Dinode block_buf[BLOCKSIZ/DINODESIZ];
 
 static inline void print_hinodes_head(int igetid) {
     printf("When iget(%d) and not found: \n", igetid);
-    for(int i = 0; i < NHINO; ++i) printf("Hinode head: %p\n", hinode[i].head);
+    printf("Hinode head:");
+    for(int i = 0; i < NHINO; ++i)
+    {
+        if(!hinode[i].head){
+         printf( " %p", hinode[i].head);
+         }
+          else{
+               printf(" %p, and mode is %d",hinode[i].head, hinode[i].head->data_mode);
+          }
+    }
     sysp();
 }
 
@@ -39,6 +48,7 @@ Inode* iget(unsigned int dinode_id) {
     Inode* newInode;
 
     if(hinode[hash].head != nullptr) {
+        bk("in iget, we found dinode_id in hash table");
         tmp = hinode[hash].head;
         while(tmp) {
             if(tmp->mem_ino == dinode_id) {
@@ -56,7 +66,10 @@ Inode* iget(unsigned int dinode_id) {
     addr = DINODESTART + dinode_id*DINODESIZ;
 
     // 2. 向堆区申请新的Inode结构体
+    bk("begin malloc new Inode");
     newInode = (Inode*)malloc(sizeof(Inode));
+    printf("\nnew Inode: %p\n", newInode);
+    bk("end malloc new Inode");
 
     // 3. 把磁盘中的Dinode读取进入Inode中
     /* --- 这里很容易出bug，注意这里 --- */

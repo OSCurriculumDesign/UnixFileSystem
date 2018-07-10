@@ -20,6 +20,7 @@ void format(){
     }
     fseek(fd, 0, SEEK_SET);
     fwrite(buf, 1, (DINODEBLK+FILEBLK+2) * BLOCKSIZ * sizeof(char), fd);
+    free(buf);
 
     /*0.initialize the password */
     password[0].p_uid= 2116; password[0].p_gid= 03;
@@ -43,9 +44,9 @@ void format(){
     iput(inode);
 
     /* 1 main dir id */
-    bk("begin iget 0 for nil");
+    bk("begin iget 1 for main");
     inode=iget(1);
-    bk("end iget 0 for nil");
+    bk("end iget 1 for main");
 
     inode->associated=1;
     inode->data_mode=DEFAULTMODE|DIDIR;
