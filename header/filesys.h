@@ -110,7 +110,7 @@ extern int write(File *fd,char *buff,unsigned int size);
 extern int login(unsigned short uid, char* password);
 extern int init_root_user(char *password);
 extern int logout(unsigned short uid);
-
+extern int add_user(char *username,char *password,int group);
 // extern unsigned int aces();
 // extern void dirlt(int );
 

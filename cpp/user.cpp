@@ -6,7 +6,7 @@
 
 int login(unsigned short uid, char* pwd){
     int i,j;
-    for(i=0;i<PWDNUM;i++){
+    for(i=1;i<PWDNUM;i++){
         if((uid==password[i].p_uid) && !(strcmp(pwd,password[i].password))){
             for(j=0;j<USERNUM;j++){
                 if(user[j].u_uid == 0){
@@ -59,4 +59,36 @@ int logout(unsigned short uid){
     }
     user[i].u_uid = -1;
     fprintf(stdout, "logout success\n");
+}
+
+int add_user(char *username,char *pwd,int group){
+    Inode* inode=iget(3);
+    int i;
+    int last_uid = 0;
+    for(i=1;i<PWDNUM;i++){
+        last_uid = password[i-1].p_uid;
+        if(password[i].p_uid == 0){
+            password[i].p_uid = last_uid+1;
+            password[i].p_gid = group;
+            strcpy(password[i].password,pwd);
+            break;
+        }
+    }
+    if(i == PWDNUM){
+        fprintf(stdout, "can not add more user\n");
+        return 0;
+    }
+
+    Pwd *user = new Pwd();
+    strcpy(user->password,pwd);
+    user->p_uid = last_uid+1;
+    user->p_gid = group;
+
+    fseek(fd,DATASTART+2*BLOCKSIZ, sizeof(Pwd)*i);
+    fwrite(user,sizeof(Pwd), 1,fd);
+    fflush(fd);
+    iput(inode);
+
+    fprintf(stdout, "add user success\n");
+    return last_uid+1;
 }

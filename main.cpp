@@ -53,8 +53,14 @@ static int test_dir() {
 static int test_log(){
     format();
     char *a = "eeee";
-    login(2220,a);
-    logout(2220);
+    int uid = add_user(a,a,0);
+    int uid2 = add_user(a,a,0);
+    printf("%d %d\n",uid,uid2 );
+    for(int i=0;i<10;i++){
+        printf("-%d\n",password[i].p_uid );
+    }
+    login(uid,a);
+    logout(uid);
     return 0;
 }
 
