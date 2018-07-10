@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cstring>
 #include "filesys.h"
+
 using namespace std;
 void format(){
     struct Inode * inode;
@@ -45,9 +46,9 @@ void format(){
     inode->data_mode=DEFAULTMODE|DIDIR;
     inode->data_size=3 *(DIRSIZ+sizeof(unsigned int));
     inode->data_addr[0]=1;    /* block 0tfl is used by the main directory */
-    strcpy(dir_buf[0].dir_name, "..");
+    strcpy(dir_buf[0].dir_name, ".");
     dir_buf[0].disk_ino=1;
-    strcpy(dir_buf[1].dir_name,".");
+    strcpy(dir_buf[1].dir_name,"..");
     dir_buf[1].disk_ino=1;
     strcpy(dir_buf[2].dir_name, "etc");
     dir_buf[2].disk_ino=2;
@@ -61,10 +62,10 @@ void format(){
     inode->data_mode=DEFAULTMODE|DIDIR;
     inode->data_size=3 * (DIRSIZ+sizeof(unsigned int));
     inode->data_addr[0]=1;    /* block 0# is used by the etc */
-    strcpy (dir_buf[0].dir_name, "..");
-    dir_buf[0].disk_ino=1;
+    strcpy (dir_buf[0].dir_name, ".");
+    dir_buf[0].disk_ino=2;
     strcpy(dir_buf[1].dir_name, "..");
-    dir_buf[1].disk_ino=2;
+    dir_buf[1].disk_ino=1;
     strcpy(dir_buf[2].dir_name, "password");
     dir_buf[2].disk_ino=3;
     fseek(fd, DATASTART+BLOCKSIZ * 1, SEEK_SET);
@@ -85,6 +86,17 @@ void format(){
     fseek(fd,DATASTART+2*BLOCKSIZ, SEEK_SET);
     fwrite(password, 1, BLOCKSIZ,fd);
     iput(inode);
+
+    cur_path_inode = iget(1);
+    dir.direct[0].disk_ino = 1;
+    strcpy(dir.direct[0].dir_name, ".");
+     dir.direct[1].disk_ino = 1;
+    strcpy(dir.direct[0].dir_name, "..");
+     dir.direct[2].disk_ino = 2;
+    strcpy(dir.direct[0].dir_name, "etc");
+
+    dir.size = 1;
+
 
     /*    2. initialize the superblock */
     filsys.s_isize=DINODEBLK;

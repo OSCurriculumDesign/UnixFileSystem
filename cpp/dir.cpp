@@ -60,6 +60,9 @@ void list_dir() {
     unsigned short data_mode;
     Inode* pinode;
 
+    bk(" ");
+
+
     fprintf(stdout, "\ncurr dir size: %d\n", dir.size);
     for(int i = 0; i < dir.size; ++i) {
         // 指向有用的结点
@@ -78,6 +81,8 @@ void list_dir() {
             pinode = nullptr;
         } 
     }
+    bk(" ");
+
 }
 
 // mkdir
@@ -85,6 +90,8 @@ void mkdir(char* newdir_name) {
     int dir_id, dir_pos;
     Inode* pinode =  nullptr;
     unsigned int block_id;
+
+    bk("1");
 
     Direct buf[BLOCKSIZ/(DIRSIZ+sizeof(unsigned int))];
 
@@ -97,6 +104,7 @@ void mkdir(char* newdir_name) {
         else fprintf(stdout, "\nunknown error! This is a data inode\n");
         return ;
     } else {
+        bk("2");
         dir_pos = insert_direct_to_dirlist_by_name(newdir_name);
         pinode = ialloc();
         dir_id = pinode->mem_ino;
@@ -113,8 +121,14 @@ void mkdir(char* newdir_name) {
         // 请求 Eric lee review
         block_id = balloc();
 
+        bk("3");
+
+
         fseek(fd, DATASTART+block_id*BLOCKSIZ, SEEK_SET);
         fwrite(buf, BLOCKSIZ, 1, fd);
+
+        bk("4");
+
 
         pinode->data_size = 2*(DIRSIZ+sizeof(unsigned int));
         pinode->associated = 1;
@@ -124,6 +138,9 @@ void mkdir(char* newdir_name) {
         pinode->data_addr[0] = block_id;
         iput(pinode);
         pinode = nullptr;
+
+        bk("5");
+
         return ;
     }
 }

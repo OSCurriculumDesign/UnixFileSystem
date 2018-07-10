@@ -4,6 +4,7 @@
 #include <cstdio>
 #include "const.h"
 #include "inode.h"
+#include "test.h"
 
 struct Filsys{
     //
