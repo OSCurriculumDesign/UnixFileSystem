@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cassert>
+#include <cstdlib>
 
 #include "inode.h"
 #include "filesys.h"
@@ -8,6 +9,12 @@
 
 // 静态的辅助函数和变量
 static Dinode block_buf[BLOCKSIZ/DINODESIZ];
+
+static inline void print_hinodes_head(int igetid) {
+    printf("When iget(%d) and not found: \n", igetid);
+    for(int i = 0; i < NHINO; ++i) printf("Hinode head: %p\n", hinode[i].head);
+    sysp();
+}
 
 
 // 实现inode.h中的接口
@@ -42,12 +49,14 @@ Inode* iget(unsigned int dinode_id) {
         }
     }
 
+    print_hinodes_head(dinode_id);
+
     // 不存在id符合要求的inode_id
     // 1. 计算dinode在磁盘中的地址
     addr = DINODESTART + dinode_id*DINODESIZ;
 
     // 2. 向堆区申请新的Inode结构体
-    newInode = new Inode;
+    newInode = (Inode*)malloc(sizeof(Inode));
 
     // 3. 把磁盘中的Dinode读取进入Inode中
     /* --- 这里很容易出bug，注意这里 --- */
@@ -106,7 +115,7 @@ bool iput(Inode* pinode) {
             pinode->next->prev = pinode->prev;
             pinode->prev->next = pinode->next;
         }
-        delete pinode;
+        free(pinode);
     }
     return true;
 }

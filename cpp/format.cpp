@@ -35,12 +35,18 @@ void format(){
 
     /*    1.creat the main directory and its sub dir etc and the file password */
     /* 0 empty dinode id */
+    bk("begin iget 0 for nil");
     inode=iget(0);
+    bk("end iget 0 for nil");
+
     inode->data_mode=DIEMPTY;
     iput(inode);
 
     /* 1 main dir id */
+    bk("begin iget 0 for nil");
     inode=iget(1);
+    bk("end iget 0 for nil");
+
     inode->associated=1;
     inode->data_mode=DEFAULTMODE|DIDIR;
     inode->data_size = 3 * (DIRSIZ+sizeof(unsigned int));
@@ -56,7 +62,10 @@ void format(){
     iput(inode);
 
     /* 2 etc dir id */
+    bk("begin iget 2 for etc");
     inode=iget(2);
+    bk("end iget 2 for etc");
+
     inode ->associated = 1;
     inode->data_mode=DEFAULTMODE|DIDIR;
     inode->data_size=3 * (DIRSIZ+sizeof(unsigned int));
@@ -72,7 +81,10 @@ void format(){
     iput(inode);
 
     /* 3 password id */
+    bk("begin iget 3 for password");
     inode=iget(3);
+    bk("end iget 3 for password");
+
     inode->associated= 1;
     inode->data_mode=DEFAULTMODE |  DIFILE;
     inode->data_size=BLOCKSIZ;
@@ -86,7 +98,10 @@ void format(){
     fwrite(password, 1, BLOCKSIZ,fd);
     iput(inode);
 
+    bk("begin cur_path_inode iget 1 for main");
     cur_path_inode = iget(1);
+    bk("end cur_path_inode iget 1 for nil");
+
     dir.direct[0].disk_ino = 1;
     strcpy(dir.direct[0].dir_name, ".");
      dir.direct[1].disk_ino = 1;
