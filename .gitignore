@@ -11,3 +11,6 @@ CMakeCache.txt
 cmake_install.cmake
 Makefile
 filesystem
+
+*.cbp
+.idea/*
