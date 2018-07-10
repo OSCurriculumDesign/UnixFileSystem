@@ -18,7 +18,8 @@ Inode * cur_path_inode;
 
 int user_id, file_block;
 
+Pwd password [PWDNUM];
+
+
 // extern FILE * fd ;
 // extern Pwd pwd[PWDNUM];
-
-

@@ -59,6 +59,7 @@ extern Pwd pwd[PWDNUM];
 extern User user[USERNUM];
 extern Inode * cur_path_inode;
 extern int user_id, file_block;
+extern Pwd password [PWDNUM];
 
 // implement in ialloc.cpp
 extern Inode* iget(unsigned int dinode_id);

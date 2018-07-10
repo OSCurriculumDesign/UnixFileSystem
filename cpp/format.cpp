@@ -8,7 +8,6 @@ using namespace std;
 void format(){
     struct Inode * inode;
     struct Direct dir_buf [BLOCKSIZ / (DIRSIZ+sizeof(unsigned int))];
-    struct Pwd password [BLOCKSIZ/(PWDSIZ+4)];
     unsigned short block_buf[51];
     char * buf;
     int i, j;
