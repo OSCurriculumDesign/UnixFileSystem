@@ -59,7 +59,8 @@ int create(unsigned int user_id, char* filename, unsigned short mode) {
             //清空inode指向的块，只留下inode
             free_all_blocks_of_the_old_file(pinode, false);
         }
-            return 1;
+        fprintf(stdout, "\nclear old file!\n");
+        return 0;
     } else { // 不存在
         if(dir.size >= DIRNUM){
             return -1;
@@ -77,7 +78,8 @@ int create(unsigned int user_id, char* filename, unsigned short mode) {
         pinode->associated = 1;
 
         iput(pinode);
-        return 1;
+        fprintf(stdout, "\ncreate success!\n");
+        return 0;
     }
 }
 
@@ -166,4 +168,21 @@ int del(unsigned int user_id, char* filename){
     tmp->associated--;
     iput(tmp);
     return dir.size;
+}
+
+/**
+* 文件读取
+*/
+int read(File *fd,char *buff,unsigned int size){
+    Inode* pinode = fd->f_inode;
+    char *temp_buff = buff;
+    //TODO 判断是否为读取打开
+
+}
+
+/**
+* 文件写入
+*/
+int write(File *fd,char *buff,unsigned int size){
+
 }

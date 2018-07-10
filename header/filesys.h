@@ -101,7 +101,13 @@ extern int create(unsigned int user_id, char* filename, unsigned short mode = DE
 extern File* open(unsigned int user_id, char* filename, unsigned short openmode = DEFAULTMODE);
 extern int close(unsigned int user_id, FILE* fp);
 extern int del(unsigned int user_id, char* filename);
+extern int read(File *fd,char *buff,unsigned int size);
+extern int write(File *fd,char *buff,unsigned int size);
 
+// implement in user.cpp
+extern int login(unsigned short uid, char* password);
+extern int init_root_user(char *password);
+extern int logout(unsigned short uid);
 
 // extern unsigned int aces();
 // extern void dirlt(int );

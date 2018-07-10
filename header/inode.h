@@ -9,12 +9,7 @@
  这类对象对于体积十分敏感
  经过测试，该类的体积是56
  test log:
- Sizeof Dinode is 56
- sizeof unsigned short is 2
- sizeof unsigned int is 4
- sizeof unsigned long is 8
- NADDR is 10
- 刚好10*4 + 4*2 + 8 = 56
+ Sizeof Dinode is 64
  所以可以放心用
  */
 struct Dinode{

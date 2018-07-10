@@ -339,6 +339,33 @@ cpp/name.cpp.s:
 	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/name.cpp.s
 .PHONY : cpp/name.cpp.s
 
+cpp/user.o: cpp/user.cpp.o
+
+.PHONY : cpp/user.o
+
+# target to build an object file
+cpp/user.cpp.o:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/user.cpp.o
+.PHONY : cpp/user.cpp.o
+
+cpp/user.i: cpp/user.cpp.i
+
+.PHONY : cpp/user.i
+
+# target to preprocess a source file
+cpp/user.cpp.i:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/user.cpp.i
+.PHONY : cpp/user.cpp.i
+
+cpp/user.s: cpp/user.cpp.s
+
+.PHONY : cpp/user.s
+
+# target to generate assembly for a file
+cpp/user.cpp.s:
+	$(MAKE) -f CMakeFiles/unix_file_sys.dir/build.make CMakeFiles/unix_file_sys.dir/cpp/user.cpp.s
+.PHONY : cpp/user.cpp.s
+
 cpp/varseg.o: cpp/varseg.cpp.o
 
 .PHONY : cpp/varseg.o
@@ -426,6 +453,9 @@ help:
 	@echo "... cpp/name.o"
 	@echo "... cpp/name.i"
 	@echo "... cpp/name.s"
+	@echo "... cpp/user.o"
+	@echo "... cpp/user.i"
+	@echo "... cpp/user.s"
 	@echo "... cpp/varseg.o"
 	@echo "... cpp/varseg.i"
 	@echo "... cpp/varseg.s"

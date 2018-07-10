@@ -37,36 +37,45 @@ static void test_sizeof_Direct(void) {
 
 // cli入口函数
 
-int main(int argc, const char * argv[]) {
+int main(int argc, char const *argv[]) {
     format();
-
-    unsigned int block_buf[51];
-    for(int i=11; i<561; i+=50){
-        fseek(fd, DATASTART+i*BLOCKSIZ, SEEK_SET);
-        fread(block_buf, sizeof(block_buf), 1, fd);
-    }
-    for(int i=0; i<14; i++){
-        temp[i]=balloc();
-        cout<<temp[i]<<endl;
-    }
-    bfree(1);
-    bfree(4);
-    bfree(5);
-    bfree(3);
-    bfree(2);
-    bfree(10);
-    bfree(13);
-    bfree(6);
-    bfree(7);
-
-    for(int i=0; i<14; i++){
-        temp[i]=balloc();
-        cout<<temp[i]<<endl;
-    }
-    bwrite(234, "123123");
-    cout<< bread(234,512) <<endl;
+    char *a = "1234";
+    create(2116,a,WRITE);
+    list_dir();
+    del(2116,a);
     return 0;
 }
+
+// int main(int argc, const char * argv[]) {
+//     format();
+//
+//     unsigned int block_buf[51];
+//     for(int i=11; i<561; i+=50){
+//         fseek(fd, DATASTART+i*BLOCKSIZ, SEEK_SET);
+//         fread(block_buf, sizeof(block_buf), 1, fd);
+//     }
+//     for(int i=0; i<14; i++){
+//         temp[i]=balloc();
+//         cout<<temp[i]<<endl;
+//     }
+//     bfree(1);
+//     bfree(4);
+//     bfree(5);
+//     bfree(3);
+//     bfree(2);
+//     bfree(10);
+//     bfree(13);
+//     bfree(6);
+//     bfree(7);
+//
+//     for(int i=0; i<14; i++){
+//         temp[i]=balloc();
+//         cout<<temp[i]<<endl;
+//     }
+//     bwrite(234, "123123");
+//     cout<< bread(234,512) <<endl;
+//     return 0;
+// }
 
 
 

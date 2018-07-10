@@ -12,7 +12,7 @@ void format(){
     char * buf;
     int i, j;
     /*    creat the file system file */
-    fd=fopen ("/Users/eric_lee/Project/OS/OS/filesystem", "r+w+b");
+    fd=fopen ("./filesystem", "wb+");
     buf=(char * ) malloc ((DINODEBLK+FILEBLK+2) * BLOCKSIZ * sizeof(char));
     if (buf==NULL){
         printf ("\nFile system file creat failed!(buf==NULL)\n");
