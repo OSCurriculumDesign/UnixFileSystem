@@ -69,6 +69,9 @@ void list_dir() {
         if(dir.direct[i].disk_ino != 0) {
             fprintf(stdout, "%20s  ", dir.direct[i].dir_name);
             pinode = iget(dir.direct[i].disk_ino);
+
+            printf("\n%p is pinode null? direct[i].disk_ino is %d\n", pinode, dir.direct[i].disk_ino);
+            bk(" test the ptr of the inode");
     
             data_mode = pinode?pinode->data_mode:DIEMPTY;
             if(data_mode & DIFILE) fprintf(stdout, " file   ");
@@ -81,42 +84,56 @@ void list_dir() {
             pinode = nullptr;
         } 
     }
-    bk(" ");
-
+    bk(" end of list_dir");
 }
 
 // mkdir
 void mkdir(char* newdir_name) {
-    int dir_id, dir_pos;
+    int dir_pos = -1;
     Inode* pinode =  nullptr;
     unsigned int block_id;
 
-    bk("1");
+    bk(" ");
 
     Direct buf[BLOCKSIZ/(DIRSIZ+sizeof(unsigned int))];
 
-    dir_id = inode_id_by_name(newdir_name);
+    int dir_id = inode_id_by_name(newdir_name);
     // 找到同名的
     if(dir_id != 0) {
+        bk(" ");
         pinode = iget(dir_id);
         if(pinode->data_mode & DIDIR) fprintf(stdout, "\n%20s has already existed!\n", newdir_name);
         else if(pinode->data_mode & DIFILE) fprintf(stdout, "\n%20s is a file name!\n");
-        else fprintf(stdout, "\nunknown error! This is a data inode\n");
         return ;
     } else {
-        bk("2");
+        printf("current dir name is %s\n",dir.direct[0].dir_name);
+        if(dir.size == DIRNUM) {
+            printf("\nnot enough dir position\n");
+            return ;
+        }
+
+        bk(" ");
         dir_pos = insert_direct_to_dirlist_by_name(newdir_name);
         pinode = ialloc();
         dir_id = pinode->mem_ino;
         dir.direct[dir_pos].disk_ino = pinode->mem_ino;
-        dir.size++;
 
-        /*  */
         strcpy(buf[0].dir_name, ".");
         buf[0].disk_ino = dir_id;
         strcpy(buf[1].dir_name, "..");
         buf[1].disk_ino = cur_path_inode->mem_ino;
         buf[2].disk_ino = 0;
+
+        // dir.direct[dir.size-1].disk_ino = dir_id;
+        // strcpy(dir.direct[dir.size-1].dir_name, newdir_name);
+        // dir.size++;
+        // dir.direct[dir.size-1].disk_ino = 0;
+
+        // printf("123\n");
+        // printf("current dir no. is %s\n",dir.direct[dir.size-1].dir_name);
+        // for(int i=0;i<dir.size;i++){
+        //     printf("%s\n",dir.direct[i].dir_name);
+        // }
 
         // 请求 Eric lee review
         block_id = balloc();
@@ -143,6 +160,7 @@ void mkdir(char* newdir_name) {
 
         return ;
     }
+    bk(" end of mkdir");
 }
 
 

@@ -37,14 +37,16 @@ static void test_sizeof_Direct(void) {
 
 static int test_dir() {
     format();
-    bk(" ");
+    bk(" end of format");
 
     list_dir();
-    bk(" ");
+    bk(" before mkdir");
 
-    mkdir("new");
-    list_dir();
-    //chdir("new");
+    // mkdir("new");
+
+    // bk(" end mkdir");
+    // list_dir();
+    // chdir("new");
     return 0;
 }
 

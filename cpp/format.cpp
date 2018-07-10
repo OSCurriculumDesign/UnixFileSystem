@@ -44,7 +44,7 @@ void format(){
     inode=iget(1);
     inode->associated=1;
     inode->data_mode=DEFAULTMODE|DIDIR;
-    inode->data_size=3 *(DIRSIZ+sizeof(unsigned int));
+    inode->data_size = 3 * (DIRSIZ+sizeof(unsigned int));
     inode->data_addr[0]=1;    /* block 0tfl is used by the main directory */
     strcpy(dir_buf[0].dir_name, ".");
     dir_buf[0].disk_ino=1;
@@ -91,11 +91,12 @@ void format(){
     dir.direct[0].disk_ino = 1;
     strcpy(dir.direct[0].dir_name, ".");
      dir.direct[1].disk_ino = 1;
-    strcpy(dir.direct[0].dir_name, "..");
+    strcpy(dir.direct[1].dir_name, "..");
      dir.direct[2].disk_ino = 2;
-    strcpy(dir.direct[0].dir_name, "etc");
+    strcpy(dir.direct[2].dir_name, "etc");
 
-    dir.size = 1;
+    dir.size = 3;
+    dir.direct[dir.size].disk_ino = 0;
 
 
     /*    2. initialize the superblock */
